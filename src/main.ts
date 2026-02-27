@@ -1,6 +1,7 @@
+import "./ui/Button";
 import "./style.css";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-  </div>
-`;
+// document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
+//   <div>
+//   </div>
+// `;
