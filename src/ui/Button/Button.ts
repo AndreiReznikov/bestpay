@@ -68,9 +68,12 @@ buttonStyles.replaceSync(`
 class UIButton extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: "open" });
-    shadow.adoptedStyleSheets = [buttonStyles];
-    shadow.innerHTML = `<button class="button">
+    this.attachShadow({ mode: "open" });
+
+    if (!this.shadowRoot) return;
+
+    this.shadowRoot.adoptedStyleSheets = [buttonStyles];
+    this.shadowRoot.innerHTML = `<button class="button">
       ${this.hasAttribute("loading") ? '<span class="spinner"></span>' : "<slot></slot>"}
     </button>`;
   }
