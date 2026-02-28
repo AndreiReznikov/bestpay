@@ -1,3 +1,5 @@
+import { maskMoneyInput } from "./utils";
+
 const inputStyles = new CSSStyleSheet();
 
 inputStyles.replaceSync(`
@@ -77,7 +79,7 @@ class UIInput extends HTMLElement {
     this.shadowRoot.innerHTML = `<div class="container">
       <span class="title">${this.getAttribute("inputTitle") ?? ""}</span>
       <div class="input-wrapper">
-        <input class="input" placeholder="${this.getAttribute("placeholder") ?? ""}" />
+        <input type="text" class="input" placeholder="${this.getAttribute("placeholder") ?? ""}" />
         <span class="aside">₽</span>
       </div>
       <span class="error"></span>
@@ -89,12 +91,18 @@ class UIInput extends HTMLElement {
   }
 
   handleInput(e: Event) {
+    const target = e.target as HTMLInputElement;
+
+    if (this.hasAttribute("money")) {
+      maskMoneyInput(target);
+    }
+
     this.error.textContent = "";
     this.container?.classList.remove("invalid");
   }
 
   handleBlur() {
-    console.log(this.validate());
+    // console.log(this.validate());
 
     const { error, isValid } = this.validate();
 
@@ -152,6 +160,7 @@ class UIInput extends HTMLElement {
       required: this.hasAttribute("required"),
       minLength: this.getAttribute("minlength"),
       maxLength: this.getAttribute("maxlength"),
+      money: this.hasAttribute("money"),
     };
   }
 }
