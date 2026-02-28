@@ -10,16 +10,23 @@
     <div id="app">
       <!-- <ui-button>Отправить</ui-button> -->
       <!-- <ui-button loading>Оплатить</ui-button> -->
-      <div>
-        <ui-input
+
+      <!-- <ui-input
           inputTitle="Номер карты"
           placeholder="1234 5678 1234 5678"
           minLength="2"
           maxLength="10"
           email
           required
-        ></ui-input>
-      </div>
+        ></ui-input> -->
+      <ui-textarea
+        textareaTitle="Описание"
+        placeholder="Что-то о заказе"
+        maxLength="200"
+        rows="3"
+        required
+      >
+      </ui-textarea>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

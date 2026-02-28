@@ -1,5 +1,6 @@
 import "./ui/Button";
 import "./ui/Input";
+import "./ui/Textarea";
 import "./style.css";
 
 // document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
