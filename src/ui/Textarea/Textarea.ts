@@ -67,7 +67,7 @@ class UITextarea extends HTMLElement {
       <span class="title">${this.getAttribute("textareaTitle") ?? ""}</span>
       <textarea
         class="textarea"
-        rows="${this.getAttribute("rows") ?? "3"}"
+        rows="2"
         placeholder="${this.getAttribute("placeholder") ?? ""}"
       ></textarea>
       <span class="error"></span>
@@ -75,23 +75,22 @@ class UITextarea extends HTMLElement {
 
     this.handleInput = this.handleInput.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
+    this.adjustHeight = this.adjustHeight.bind(this);
     this.validators = this.getValidators();
   }
 
   handleInput(e: Event) {
     this.error.textContent = "";
     this.container?.classList.remove("invalid");
+    this.adjustHeight(2, 3);
   }
 
   handleBlur() {
-    // console.log(this.validate());
-
     const { error, isValid } = this.validate();
 
     if (!isValid) {
       this.error.textContent = error;
       this.container?.classList.add("invalid");
-
       return;
     }
 
@@ -105,6 +104,56 @@ class UITextarea extends HTMLElement {
     this.error = this.shadowRoot?.querySelector(".error");
     this.textarea.addEventListener("input", this.handleInput);
     this.textarea.addEventListener("blur", this.handleBlur);
+
+    setTimeout(() => this.adjustHeight(2, 3), 0);
+  }
+
+  adjustHeight(minRows = 2, maxRows = 3) {
+    if (!this.textarea) return;
+
+    const value = this.textarea.value;
+    const currentRows = this.textarea.rows;
+
+    const lineBreaks = (value.match(/\n/g) || []).length;
+
+    let neededRows = minRows;
+
+    if (value) {
+      neededRows = 1;
+
+      neededRows += lineBreaks;
+
+      if (lineBreaks > 0) {
+        const lastLine = value.split("\n").pop() || "";
+
+        const span = document.createElement("span");
+        span.style.font = getComputedStyle(this.textarea).font;
+        span.style.visibility = "hidden";
+        span.style.position = "absolute";
+        span.style.whiteSpace = "nowrap";
+        span.textContent = lastLine;
+        document.body.appendChild(span);
+
+        const textWidth = span.offsetWidth;
+        const textareaWidth = this.textarea.clientWidth - 20;
+
+        document.body.removeChild(span);
+
+        if (textWidth > textareaWidth) {
+          neededRows++;
+        }
+      }
+    }
+
+    let newRows = currentRows;
+
+    if (neededRows > currentRows) {
+      newRows = Math.min(maxRows, neededRows);
+    } else if (neededRows < currentRows && currentRows > minRows) {
+      newRows = Math.max(minRows, neededRows);
+    }
+
+    this.textarea.rows = newRows;
   }
 
   validate() {
