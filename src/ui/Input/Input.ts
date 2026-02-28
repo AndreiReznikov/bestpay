@@ -1,6 +1,7 @@
 import {
   checkIsDateValid,
   maskCardInput,
+  maskCvvInput,
   maskDateInput,
   maskMoneyInput,
 } from "./utils";
@@ -123,6 +124,10 @@ class UIInput extends HTMLElement {
       maskDateInput(target);
     }
 
+    if (this.hasAttribute("cvv")) {
+      maskCvvInput(target);
+    }
+
     this.error.textContent = "";
     this.container?.classList.remove("invalid");
   }
@@ -207,6 +212,10 @@ class UIInput extends HTMLElement {
       }
     }
 
+    if (this.validators.cvv && value && value.length < 3) {
+      error = "Минимум три цифры";
+    }
+
     return {
       isValid: error === "",
       error,
@@ -243,6 +252,7 @@ class UIInput extends HTMLElement {
       email: this.hasAttribute("email"),
       card: this.hasAttribute("card"),
       date: this.hasAttribute("date"),
+      cvv: this.hasAttribute("cvv"),
     };
   }
 }

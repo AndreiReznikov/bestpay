@@ -112,6 +112,10 @@ export const maskDateInput = (target: HTMLInputElement) => {
   target.value = value;
 };
 
+export const maskCvvInput = (target: HTMLInputElement) => {
+  target.value = target.value.replace(/\D/g, '');
+};
+
 export const checkIsDateValid = (month: number, year: number) => {
   const now = new Date();
   const currentYear = now.getFullYear() % 100;
