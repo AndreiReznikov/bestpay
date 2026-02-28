@@ -72,9 +72,11 @@ class UIButton extends HTMLElement {
 
     if (!this.shadowRoot) return;
 
+    const loading = this.hasAttribute("loading");
+
     this.shadowRoot.adoptedStyleSheets = [buttonStyles];
     this.shadowRoot.innerHTML = `<button class="button">
-      ${this.hasAttribute("loading") ? '<span class="spinner"></span>' : "<slot></slot>"}
+      ${loading ? '<span class="spinner"></span>' : "<slot></slot>"}
     </button>`;
   }
 }
