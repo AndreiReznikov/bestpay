@@ -100,3 +100,25 @@ export const maskCardInput = (target: HTMLInputElement) => {
     target.setSelectionRange(newPosition, newPosition);
   }
 };
+
+export const maskDateInput = (target: HTMLInputElement) => {
+  let value = target.value.replace(/\D/g, "");
+  value = value.slice(0, 4);
+
+  if (value.length > 2) {
+    value = value.slice(0, 2) + "/" + value.slice(2);
+  }
+
+  target.value = value;
+};
+
+export const checkIsDateValid = (month: number, year: number) => {
+  const now = new Date();
+  const currentYear = now.getFullYear() % 100;
+  const currentMonth = now.getMonth() + 1;
+
+  if (year < currentYear) return false;
+  if (year === currentYear && month < currentMonth) return false;
+
+  return true;
+};

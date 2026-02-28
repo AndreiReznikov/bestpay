@@ -1,4 +1,9 @@
-import { maskCardInput, maskMoneyInput } from "./utils";
+import {
+  checkIsDateValid,
+  maskCardInput,
+  maskDateInput,
+  maskMoneyInput,
+} from "./utils";
 
 const inputStyles = new CSSStyleSheet();
 
@@ -6,9 +11,16 @@ inputStyles.replaceSync(`
   .container {
     display: flex;
     flex-direction: column;
-    max-width: 319px;
     width: 100%;
     height: 26px;
+  }
+
+  .container.sm {
+    max-width: 124px;
+  }
+
+  .container.md {
+    max-width: 319px;
   }
 
   .container.invalid * {
@@ -76,11 +88,17 @@ class UIInput extends HTMLElement {
     if (!this.shadowRoot) return;
 
     this.shadowRoot.adoptedStyleSheets = [inputStyles];
-    this.shadowRoot.innerHTML = `<div class="container">
-      <span class="title">${this.getAttribute("inputTitle") ?? ""}</span>
+
+    const size = this.getAttribute("size") || "md";
+    const aside = this.getAttribute("aside");
+    const title = this.getAttribute("inputTitle") ?? "";
+    const placeholder = this.getAttribute("placeholder") ?? "";
+
+    this.shadowRoot.innerHTML = `<div class="container ${size}">
+      <span class="title">${title}</span>
       <div class="input-wrapper">
-        <input type="text" class="input" placeholder="${this.getAttribute("placeholder") ?? ""}" />
-        <span class="aside">₽</span>
+        <input type="text" class="input" placeholder="${placeholder}" />
+        ${aside ? `<span class="aside">${aside}</span>` : ""}
       </div>
       <span class="error"></span>
     </div>`;
@@ -99,6 +117,10 @@ class UIInput extends HTMLElement {
 
     if (this.hasAttribute("card")) {
       maskCardInput(target);
+    }
+
+    if (this.hasAttribute("date")) {
+      maskDateInput(target);
     }
 
     this.error.textContent = "";
@@ -153,7 +175,11 @@ class UIInput extends HTMLElement {
       error = "Поле обязательно";
     }
 
-    if (this.validators.card && value && !this.cardCheck(value.replace(/\s/g, ''))) {
+    if (
+      this.validators.card &&
+      value &&
+      !this.cardCheck(value.replace(/\s/g, ""))
+    ) {
       error = "Неверный номер карты";
     }
 
@@ -163,6 +189,22 @@ class UIInput extends HTMLElement {
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
     ) {
       error = "Неверный Email";
+    }
+
+    if (this.validators.date && value) {
+      if (!/^\d{2}\/\d{2}$/.test(value)) {
+        error = "Неверный формат MM/YY";
+      } else {
+        const [month, year] = value.split("/").map(Number);
+
+        if (month < 1 || month > 12) {
+          error = "Неверно введён месяц";
+        }
+
+        if (!error && !checkIsDateValid(month, year)) {
+          error = "Срок действия карты истёк";
+        }
+      }
     }
 
     return {
@@ -200,6 +242,7 @@ class UIInput extends HTMLElement {
       money: this.hasAttribute("money"),
       email: this.hasAttribute("email"),
       card: this.hasAttribute("card"),
+      date: this.hasAttribute("date"),
     };
   }
 }
