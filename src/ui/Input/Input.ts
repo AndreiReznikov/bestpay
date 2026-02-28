@@ -4,6 +4,17 @@ inputStyles.replaceSync(`
   .container {
     display: flex;
     flex-direction: column;
+    max-width: 319px;
+    width: 100%;
+    height: 26px;
+  }
+
+  .container.invalid * {
+    color: #FF3B30;
+  }
+
+  .container.invalid .input {
+    border-bottom: 1px solid #FF3B30;
   }
 
   .title {
@@ -12,9 +23,19 @@ inputStyles.replaceSync(`
     color: #A6A6A6;
   }
 
+  .input-wrapper {
+    position: relative;
+  }
+
+  .aside {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #A6A6A6;
+  }
+
   .input {
-    width: 319px;
-    height: 26px;
+    width: 100%;
     font-size: 18px;
     font-weight: 500;
     color: #595959;
@@ -22,6 +43,7 @@ inputStyles.replaceSync(`
     border-bottom: 1px solid #F2F2F2;
     outline: none;
     letter-spacing: 1px;
+    caret-color: #FF335F;
   }
 
   .input::placeholder {
@@ -40,6 +62,7 @@ inputStyles.replaceSync(`
 `);
 
 class UIInput extends HTMLElement {
+  container: HTMLDivElement | null = null;
   input: HTMLInputElement | null = null;
   error: HTMLSpanElement | null = null;
   validators: Record<string, string | boolean | null> = {};
@@ -53,7 +76,10 @@ class UIInput extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [inputStyles];
     this.shadowRoot.innerHTML = `<div class="container">
       <span class="title">${this.getAttribute("inputTitle") ?? ""}</span>
-      <input class="input" placeholder="${this.getAttribute("placeholder") ?? ""}" />
+      <div class="input-wrapper">
+        <input class="input" placeholder="${this.getAttribute("placeholder") ?? ""}" />
+        <span class="aside">₽</span>
+      </div>
       <span class="error"></span>
     </div>`;
 
@@ -64,14 +90,27 @@ class UIInput extends HTMLElement {
 
   handleInput(e: Event) {
     this.error.textContent = "";
+    this.container?.classList.remove("invalid");
   }
 
   handleBlur() {
-    // console.log(this.validate());
-    this.error.textContent = this.validate().error;
+    console.log(this.validate());
+
+    const { error, isValid } = this.validate();
+
+    if (!isValid) {
+      this.error.textContent = error;
+      this.container?.classList.add("invalid");
+
+      return;
+    }
+
+    this.container?.classList.remove("invalid");
+    this.container?.classList.add("valid");
   }
 
   connectedCallback() {
+    this.container = this.shadowRoot?.querySelector(".container");
     this.input = this.shadowRoot?.querySelector(".input");
     this.error = this.shadowRoot?.querySelector(".error");
     this.input.addEventListener("input", this.handleInput);
@@ -99,7 +138,7 @@ class UIInput extends HTMLElement {
     }
 
     if (this.validators.required && !value) {
-      error = "Обязательное поле";
+      error = "Поле обязательно";
     }
 
     return {
