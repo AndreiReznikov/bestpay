@@ -149,6 +149,14 @@ class UIInput extends HTMLElement {
       error = "Поле обязательно";
     }
 
+    if (
+      this.validators.email &&
+      value &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+    ) {
+      error = "Неверный Email";
+    }
+
     return {
       isValid: error === "",
       error,
@@ -161,6 +169,7 @@ class UIInput extends HTMLElement {
       minLength: this.getAttribute("minlength"),
       maxLength: this.getAttribute("maxlength"),
       money: this.hasAttribute("money"),
+      email: this.hasAttribute("email"),
     };
   }
 }
