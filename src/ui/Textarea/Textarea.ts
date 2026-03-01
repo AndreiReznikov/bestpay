@@ -44,6 +44,7 @@ textareaStyles.replaceSync(`
   }
 
   .error {
+    min-height: 1rem;
     margin-top: 4px;
     font-size: 12px;
     color: #FF3B30;

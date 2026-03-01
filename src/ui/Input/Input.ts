@@ -35,8 +35,14 @@ inputStyles.replaceSync(`
     border-bottom: 1px solid #FF3B30;
   }
 
-  .title {
+  .title-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
     margin-bottom: 14px;
+  }
+
+  .title {
     font-size: 12px;
     color: #A6A6A6;
   }
@@ -73,6 +79,7 @@ inputStyles.replaceSync(`
   }
 
   .error {
+    min-height: 1rem;
     margin-top: 4px;
     font-size: 12px;
     color: #FF3B30;
@@ -99,7 +106,10 @@ class UIInput extends HTMLElement {
     const placeholder = this.getAttribute("placeholder") ?? "";
 
     this.shadowRoot.innerHTML = `<div class="container ${size}">
-      <span class="title">${title}</span>
+      <div class="title-wrapper">
+        <span class="title">${title}</span>
+        <slot name="title-aside"></slot>
+      </div>
       <div class="input-wrapper">
         <input type="text" class="input" placeholder="${placeholder}" />
         ${aside ? `<span class="aside">${aside}</span>` : ""}
@@ -136,8 +146,6 @@ class UIInput extends HTMLElement {
   }
 
   handleBlur() {
-    // console.log(this.validate());
-
     const { error, isValid } = this.validate();
 
     if (!isValid) {

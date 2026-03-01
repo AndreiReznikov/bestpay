@@ -1,6 +1,7 @@
 import type { UIButton } from "../../ui/Button";
 import type { UICheckbox } from "../../ui/Checkbox";
 import type { UIInput } from "../../ui/Input";
+import bankLogoSrc from "../../assets/logo/bank-logo.svg";
 
 const paymentFormStyles = new CSSStyleSheet();
 
@@ -17,11 +18,25 @@ paymentFormStyles.replaceSync(`
     gap: 32px;
   }
 
+  .logo-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .logo {
+    width: 55px;
+    height: 47px;
+    background-image: url('${bankLogoSrc}');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
   .card-wrapper {
     display: flex;
     flex-direction: column;
     gap: 32px;
-    padding: 48px 56px;
+    padding: 24px 56px;
     border-radius: 12px;
     box-shadow: 0px 4px 16px 0px #40404029;
   }
@@ -29,6 +44,17 @@ paymentFormStyles.replaceSync(`
   .card-data-wrapper {
     display: flex;
     gap: 32px;
+  }
+
+  .terms {
+    max-width: 240px;
+    font-size: 11px;
+    text-align: center;
+    color: #A6A6A6;
+  }
+
+  .terms-link {
+    color: #595959;
   }
 `);
 
@@ -48,6 +74,9 @@ class UIPaymentForm extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [paymentFormStyles];
     this.shadowRoot.innerHTML = `<form class="form">
       <div class="card-wrapper">
+        <div class="logo-container">
+          <div class="logo"></div>
+        </div>
         <ui-input
           class="card"
           title="Номер карты"
@@ -74,6 +103,11 @@ class UIPaymentForm extends HTMLElement {
             cvv
             required
           >
+            <ui-help-icon
+              slot="title-aside"
+              text="Три цифры с обратной стороны карты"
+            >
+            </ui-help-icon>
           </ui-input>
         </div>
       </div>
@@ -84,6 +118,14 @@ class UIPaymentForm extends HTMLElement {
       >
       </ui-checkbox>
       <ui-button class="button">Оплатить</ui-button>
+      <p class="terms">
+        Нажимая на кнопку «‎Перевести»‎, вы соглашаетесь
+        с&nbsp;<a
+          class="terms-link"
+          href="/mock-terms/change-me"
+          target="_blank"
+          >условиями оферты</a>
+      </p>
     </form>`;
   }
 
@@ -98,7 +140,7 @@ class UIPaymentForm extends HTMLElement {
       const isValid = this.validate();
 
       if (isValid) {
-        console.log(this.checkbox?.checked)
+        console.log(this.checkbox?.checked);
         this.button.loading = true;
 
         setTimeout(() => {

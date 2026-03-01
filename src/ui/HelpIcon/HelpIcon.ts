@@ -3,16 +3,19 @@ const helpIconStyles = new CSSStyleSheet();
 helpIconStyles.replaceSync(`
   :host {
     position: relative;
-    display: inline-block;
+    display: flex;
+    width: 18px;
+    height: 18px;
     user-select: none;
   }
 
   .help-icon {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 18px;
     height: 18px;
+    border: none;
     border-radius: 50%;
     background: #F2F2F2;
     color: #A6A6A6;
@@ -27,18 +30,21 @@ helpIconStyles.replaceSync(`
   }
 
   .tooltip {
-    visibility: hidden;
     position: absolute;
-    bottom: 100%;
     left: 50%;
-    margin-bottom: 2px;
+    bottom: 100%;
+    display: flex;
+    min-width: 152px;
+    width: 100%;
+    margin-bottom: 5px;
     padding: 8px;
     font-size: 12px;
     background: #595959;
     color: white;
     border-radius: 8px;
     transform: translateX(-50%);
-    white-space: nowrap;
+    // white-space: nowrap;
+    visibility: hidden;
     z-index: 1000;
   }
 
@@ -51,7 +57,6 @@ helpIconStyles.replaceSync(`
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
     width: 0;
     height: 0;
     margin-top: -1px;
@@ -59,6 +64,7 @@ helpIconStyles.replaceSync(`
     border-right: 10px solid transparent;
     border-top: 8px solid #595959;
     border-bottom: 0;
+    transform: translateX(-50%);
   }
 `);
 
@@ -73,8 +79,11 @@ class UIHelpIcon extends HTMLElement {
 
     this.shadowRoot.adoptedStyleSheets = [helpIconStyles];
     this.shadowRoot.innerHTML = `
-      <span class="help-icon">?</span>
-      <span class="tooltip">${text}</span>
+      <button
+        class="help-icon"
+        aria-label="Показать подсказку"
+      >?</button>
+      <div class="tooltip">${text}</div>
     `;
   }
 }
