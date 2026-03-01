@@ -19,6 +19,8 @@ footerStyles.replaceSync(`
   .logos-list {
     display: flex;
     gap: 7px;
+    margin: 0;
+    padding: 0;
     list-style-type: none;
   }
 
