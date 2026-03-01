@@ -43,12 +43,12 @@ helpIconStyles.replaceSync(`
     color: white;
     border-radius: 8px;
     transform: translateX(-50%);
-    // white-space: nowrap;
     visibility: hidden;
     z-index: 1000;
   }
 
-  .help-icon:hover + .tooltip {
+  .help-icon:hover + .tooltip,
+  .help-icon:focus + .tooltip {
     visibility: visible;
   }
 

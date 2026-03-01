@@ -1,6 +1,5 @@
 import type { UIButton } from "../../ui/Button";
 import type { UICheckbox } from "../../ui/Checkbox";
-import type { UIInput } from "../../ui/Input";
 import bankLogoSrc from "../../assets/logo/bank-logo.svg";
 
 const paymentFormStyles = new CSSStyleSheet();
@@ -58,12 +57,11 @@ paymentFormStyles.replaceSync(`
   }
 `);
 
+const sum = "12 500₽";
+
 class UIPaymentForm extends HTMLElement {
   button: UIButton | null = null;
   checkbox: UICheckbox | null = null;
-  cardInput: UIInput | null = null;
-  dateInput: UIInput | null = null;
-  cvvInput: UIInput | null = null;
 
   constructor() {
     super();
@@ -83,8 +81,7 @@ class UIPaymentForm extends HTMLElement {
           placeholder="1234 5678 1234 5678"
           card
           required
-        >
-        </ui-input>
+        ></ui-input>
         <div class="card-data-wrapper">
           <ui-input
             class="date"
@@ -93,8 +90,7 @@ class UIPaymentForm extends HTMLElement {
             size="sm"
             date
             required
-          >
-          </ui-input>
+          ></ui-input>
           <ui-input
             class="cvv"
             title="CVV / CVC"
@@ -106,8 +102,7 @@ class UIPaymentForm extends HTMLElement {
             <ui-help-icon
               slot="title-aside"
               text="Три цифры с обратной стороны карты"
-            >
-            </ui-help-icon>
+            ></ui-help-icon>
           </ui-input>
         </div>
       </div>
@@ -115,9 +110,8 @@ class UIPaymentForm extends HTMLElement {
         class="checkbox"
         label="Сохранить карту для следующих покупок"
         checked
-      >
-      </ui-checkbox>
-      <ui-button class="button">Оплатить</ui-button>
+      ></ui-checkbox>
+      <ui-button class="button" disabled>Оплатить ${sum}</ui-button>
       <p class="terms">
         Нажимая на кнопку «‎Перевести»‎, вы соглашаетесь
         с&nbsp;<a
@@ -132,38 +126,37 @@ class UIPaymentForm extends HTMLElement {
   connectedCallback() {
     this.button = this.shadowRoot?.querySelector(".button") || null;
     this.checkbox = this.shadowRoot?.querySelector(".checkbox") || null;
-    this.cardInput = this.shadowRoot?.querySelector(".card") || null;
-    this.dateInput = this.shadowRoot?.querySelector(".date") || null;
-    this.cvvInput = this.shadowRoot?.querySelector(".cvv") || null;
 
-    this.button.addEventListener("click", () => {
-      const isValid = this.validate();
+    this.shadowRoot?.addEventListener('input', this.updateButtonState.bind(this));
+    this.button?.addEventListener("click", this.handleSubmit.bind(this));
 
-      if (isValid) {
-        console.log(this.checkbox?.checked);
-        this.button.loading = true;
-
-        setTimeout(() => {
-          window.location.href = "/result.html";
-        }, 500);
-      }
-    });
+    this.updateButtonState();
   }
 
-  validate() {
-    const allElements =
-      this.shadowRoot?.querySelectorAll("ui-input, ui-textarea") || [];
+  private updateButtonState() {
+    if (!this.button) return;
 
-    let isValid = true;
+    const inputs = this.shadowRoot?.querySelectorAll("ui-input") || [];
 
-    allElements.forEach((element) => {
-      if (typeof (element as any).validateAndShowError === "function") {
-        const result = (element as any).validateAndShowError();
-        isValid = isValid && result;
-      }
-    });
+    const allValid = Array.from(inputs).every(input =>
+      (input as any).validate().isValid
+    );
 
-    return isValid;
+    this.button.disabled = !allValid;
+  }
+
+  private handleSubmit(e: Event) {
+    e.preventDefault();
+
+    const inputs = this.shadowRoot?.querySelectorAll("ui-input") || [];
+    const isValid = Array.from(inputs).every(input =>
+      (input as any).validateAndShowError()
+    );
+
+    if (isValid) {
+      this.button!.loading = true;
+      setTimeout(() => window.location.href = "/result.html", 500);
+    }
   }
 }
 

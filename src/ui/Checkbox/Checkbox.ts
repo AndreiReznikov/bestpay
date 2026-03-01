@@ -54,6 +54,10 @@ checkboxStyles.replaceSync(`
     border-color: #FF335F;
   }
 
+  .checkbox-container input:focus + .checkmark {
+    outline: 2px solid black;
+  }
+
   .checkbox-container input:checked + .checkmark::after {
     display: block;
   }
@@ -84,12 +88,12 @@ class UICheckbox extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <label class="checkbox-container">
         <input
+          class="checkbox"
           type="checkbox"
           ${checked}
           ${disabled}
           name="${name}"
-          class="checkbox"
-        >
+        />
         <span class="checkmark"></span>
         ${label ? `<span class="label">${label}</span>` : ""}
         <slot></slot>
