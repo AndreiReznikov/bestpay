@@ -1,11 +1,15 @@
-import logoVisaSrc from "../../assets/logo/visa-logo.svg";
-import logoMasterCardSrc from "../../assets/logo/master-card-logo.svg";
-import logoMirSrc from "../../assets/logo/mir-logo.svg";
+import logoVisaSrc from "../../assets/logos/visa-logo.svg";
+import logoMasterCardSrc from "../../assets/logos/master-card-logo.svg";
+import logoMirSrc from "../../assets/logos/mir-logo.svg";
 import iconLockSrc from "../../assets/icons/ic-lock.svg";
 
 const footerStyles = new CSSStyleSheet();
 
 footerStyles.replaceSync(`
+  :host {
+    width: 100%;
+  }
+
   .footer {
     display: flex;
     flex-direction: column;

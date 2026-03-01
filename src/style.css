@@ -3,3 +3,22 @@
   line-height: 1.5;
   font-weight: 400;
 }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+c-footer {
+  margin-top: auto;
+}

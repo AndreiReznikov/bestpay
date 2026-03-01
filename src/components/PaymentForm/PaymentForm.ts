@@ -1,6 +1,6 @@
 import type { UIButton } from "../../ui/Button";
 import type { UICheckbox } from "../../ui/Checkbox";
-import bankLogoSrc from "../../assets/logo/bank-logo.svg";
+import bankLogoSrc from "../../assets/logos/bank-logo.svg";
 
 const paymentFormStyles = new CSSStyleSheet();
 
