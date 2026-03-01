@@ -4,6 +4,7 @@ helpIconStyles.replaceSync(`
   :host {
     position: relative;
     display: inline-block;
+    user-select: none;
   }
 
   .help-icon {
@@ -17,6 +18,7 @@ helpIconStyles.replaceSync(`
     color: #A6A6A6;
     font-size: 12px;
     font-weight: bold;
+    cursor: pointer;
   }
 
   .help-icon:hover {
