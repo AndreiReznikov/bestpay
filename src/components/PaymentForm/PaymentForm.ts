@@ -155,7 +155,7 @@ class UIPaymentForm extends HTMLElement {
 
     if (isValid) {
       this.button!.loading = true;
-      setTimeout(() => window.location.href = "/result.html", 500);
+      setTimeout(() => window.location.href = "/notify.html", 500);
     }
   }
 }

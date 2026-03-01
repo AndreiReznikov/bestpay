@@ -1,5 +1,6 @@
-import "./components/UnipayForm";
 import "./components/PaymentForm";
+import "./components/UnipayForm";
+import "./components/Footer";
 import "./ui/Button";
 import "./ui/Checkbox";
 import "./ui/Input";
