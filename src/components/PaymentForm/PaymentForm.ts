@@ -25,7 +25,7 @@ paymentFormStyles.replaceSync(`
   .logo {
     width: 55px;
     height: 47px;
-    background-image: url('${bankLogoSrc}');
+    background-image: url("${bankLogoSrc}");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
