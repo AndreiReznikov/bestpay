@@ -82,6 +82,13 @@ class UITextarea extends HTMLElement {
     this.validators = this.getValidators();
   }
 
+  validateAndShowError(): boolean {
+    const { isValid } = this.validate();
+    this.handleBlur();
+
+    return isValid;
+  }
+
   handleInput(e: Event) {
     this.error.textContent = "";
     this.container?.classList.remove("invalid");

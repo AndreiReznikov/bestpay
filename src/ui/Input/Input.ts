@@ -156,7 +156,7 @@ class UIInput extends HTMLElement {
     this.input.addEventListener("blur", this.handleBlur);
   }
 
-  validateAndShowError() {
+  validateAndShowError(): boolean {
     const { isValid } = this.validate();
     this.handleBlur();
 

@@ -1,6 +1,10 @@
 const buttonStyles = new CSSStyleSheet();
 
 buttonStyles.replaceSync(`
+  :host([loading]) {
+    pointer-events: none;
+  }
+
   .button {
     display: inline-flex;
     justify-content: center;
@@ -24,6 +28,22 @@ buttonStyles.replaceSync(`
 
   .button:active {
     background-color: #E1264F;
+    box-shadow: none;
+  }
+
+  .button.loading {
+    background-color: #FF335F;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .button.loading:hover {
+    background-color: #FF335F;
+    box-shadow: none;
+  }
+
+  .button.loading:active {
+    background-color: #FF335F;
     box-shadow: none;
   }
 
@@ -97,11 +117,11 @@ class UIButton extends HTMLElement {
     const loading = this.hasAttribute("loading");
     const disabled = this.hasAttribute("disabled");
 
-    if (! this.shadowRoot) return;
+    if (!this.shadowRoot) return;
 
     this.shadowRoot.adoptedStyleSheets = [buttonStyles];
     this.shadowRoot.innerHTML = `
-      <button class="button" ${disabled ? "disabled" : ""}>
+      <button class="button ${loading ? "loading" : ""}" ${disabled ? "disabled" : ""}>
         ${loading ? '<span class="spinner"></span>' : "<slot></slot>"}
       </button>
     `;
@@ -136,5 +156,4 @@ class UIButton extends HTMLElement {
 
 customElements.define("ui-button", UIButton);
 
-export type UIButtonElement = InstanceType<typeof UIButton>;
 export default UIButton;

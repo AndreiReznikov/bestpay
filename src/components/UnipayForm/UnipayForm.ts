@@ -1,5 +1,6 @@
 import type { UIButton } from "../../ui/Button";
 import type { UIInput } from "../../ui/Input";
+import type { UITextarea } from "../../ui/Textarea";
 
 const unipayFormStyles = new CSSStyleSheet();
 
@@ -21,7 +22,9 @@ unipayFormStyles.replaceSync(`
 
 class UIUnipayForm extends HTMLElement {
   button: UIButton | null = null;
+  moneyInput: UIInput | null = null;
   emailInput: UIInput | null = null;
+  textarea: UITextarea | null = null;
 
   constructor() {
     super();
@@ -33,6 +36,7 @@ class UIUnipayForm extends HTMLElement {
     this.shadowRoot.innerHTML = `<form class="form">
       <h2>Создание заказа</h2>
       <ui-input
+        class="money"
         title="Введите сумму заказа"
         placeholder="0"
         aside="₽"
@@ -47,6 +51,7 @@ class UIUnipayForm extends HTMLElement {
         required
       ></ui-input>
       <ui-textarea
+        class="textarea"
         title="Описание"
         placeholder="Что-то о заказе"
         required
@@ -57,12 +62,37 @@ class UIUnipayForm extends HTMLElement {
 
   connectedCallback() {
     this.button = this.shadowRoot?.querySelector(".button") || null;
+    this.moneyInput = this.shadowRoot?.querySelector(".money") || null;
     this.emailInput = this.shadowRoot?.querySelector(".email") || null;
+    this.textarea = this.shadowRoot?.querySelector(".textarea") || null;
 
     this.button.addEventListener("click", () => {
-      console.log(this.emailInput?.validateAndShowError());
-      this.button.loading = !this.button.loading;
+      const isValid = this.validate();
+
+      if (isValid) {
+        this.button.loading = true;
+
+        setTimeout(() => {
+          window.location.href = "/payment.html";
+        }, 500);
+      }
     });
+  }
+
+  validate() {
+    const allElements =
+      this.shadowRoot?.querySelectorAll("ui-input, ui-textarea") || [];
+
+    let isValid = true;
+
+    allElements.forEach((element) => {
+      if (typeof (element as any).validateAndShowError === "function") {
+        const result = (element as any).validateAndShowError();
+        isValid = isValid && result;
+      }
+    });
+
+    return isValid;
   }
 }
 
