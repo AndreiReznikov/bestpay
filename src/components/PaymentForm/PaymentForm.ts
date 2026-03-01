@@ -59,7 +59,7 @@ paymentFormStyles.replaceSync(`
 
 const sum = "12 500₽";
 
-class UIPaymentForm extends HTMLElement {
+class CPaymentForm extends HTMLElement {
   button: UIButton | null = null;
   checkbox: UICheckbox | null = null;
 
@@ -160,6 +160,6 @@ class UIPaymentForm extends HTMLElement {
   }
 }
 
-customElements.define("ui-payment-form", UIPaymentForm);
+customElements.define("c-payment-form", CPaymentForm);
 
-export default UIPaymentForm;
+export default CPaymentForm;

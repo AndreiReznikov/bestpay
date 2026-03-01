@@ -20,7 +20,7 @@ unipayFormStyles.replaceSync(`
   }
 `);
 
-class UIUnipayForm extends HTMLElement {
+class CUnipayForm extends HTMLElement {
   button: UIButton | null = null;
   moneyInput: UIInput | null = null;
   emailInput: UIInput | null = null;
@@ -96,6 +96,6 @@ class UIUnipayForm extends HTMLElement {
   }
 }
 
-customElements.define("ui-unipay-form", UIUnipayForm);
+customElements.define("c-unipay-form", CUnipayForm);
 
-export default UIUnipayForm;
+export default CUnipayForm;

@@ -1,1 +1,1 @@
-export { default as UIUnipayForm } from './UnipayForm';
+export { default as CUnipayForm } from './UnipayForm';

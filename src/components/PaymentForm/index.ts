@@ -1,1 +1,1 @@
-export { default as UIPaymentForm } from './PaymentForm';
+export { default as CPaymentForm } from './PaymentForm';
