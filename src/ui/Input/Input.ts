@@ -13,7 +13,6 @@ inputStyles.replaceSync(`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 26px;
   }
 
   .container.sm {
@@ -22,6 +21,10 @@ inputStyles.replaceSync(`
 
   .container.md {
     max-width: 319px;
+  }
+
+  .container.sm input {
+    height: 26px;
   }
 
   .container.invalid * {
