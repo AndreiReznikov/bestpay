@@ -18,6 +18,10 @@ unipayFormStyles.replaceSync(`
     border-radius: 12px;
     box-shadow: 0px 4px 16px 0px #40404029;
   }
+
+  .title {
+    color: #595959;
+  }
 `);
 
 class CUnipayForm extends HTMLElement {
@@ -34,7 +38,7 @@ class CUnipayForm extends HTMLElement {
 
     this.shadowRoot.adoptedStyleSheets = [unipayFormStyles];
     this.shadowRoot.innerHTML = `<form class="form">
-      <h2>Создание заказа</h2>
+      <h2 class="title">Создание заказа</h2>
       <ui-input
         class="money"
         title="Введите сумму заказа"
