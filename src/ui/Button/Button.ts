@@ -13,6 +13,7 @@ buttonStyles.replaceSync(`
     font-weight: 500;
     border: none;
     border-radius: 56px;
+    transition: 0.6s;
     cursor: pointer;
   }
 
@@ -29,6 +30,7 @@ buttonStyles.replaceSync(`
   .button:disabled {
     background-color: #A6A6A6;
     box-shadow: none;
+    cursor: default;
   }
 
   .spinner {
@@ -66,21 +68,73 @@ buttonStyles.replaceSync(`
 `);
 
 class UIButton extends HTMLElement {
+  button: HTMLButtonElement | null = null;
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.render();
+  }
 
-    if (!this.shadowRoot) return;
+  static get observedAttributes() {
+    return ["loading", "disabled"];
+  }
 
+  attributeChangedCallback(
+    _: string,
+    oldValue: string | null,
+    newValue: string | null,
+  ): void {
+    if (oldValue === newValue) return;
+    this.render();
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
     const loading = this.hasAttribute("loading");
+    const disabled = this.hasAttribute("disabled");
+
+    if (! this.shadowRoot) return;
 
     this.shadowRoot.adoptedStyleSheets = [buttonStyles];
-    this.shadowRoot.innerHTML = `<button class="button">
-      ${loading ? '<span class="spinner"></span>' : "<slot></slot>"}
-    </button>`;
+    this.shadowRoot.innerHTML = `
+      <button class="button" ${disabled ? "disabled" : ""}>
+        ${loading ? '<span class="spinner"></span>' : "<slot></slot>"}
+      </button>
+    `;
+
+    this.button = this.shadowRoot.querySelector(".button");
+  }
+
+  get loading() {
+    return this.hasAttribute("loading");
+  }
+
+  set loading(value: boolean) {
+    if (value) {
+      this.setAttribute("loading", "");
+    } else {
+      this.removeAttribute("loading");
+    }
+  }
+
+  get disabled() {
+    return this.hasAttribute("disabled");
+  }
+
+  set disabled(value: boolean) {
+    if (value) {
+      this.setAttribute("disabled", "");
+    } else {
+      this.removeAttribute("disabled");
+    }
   }
 }
 
 customElements.define("ui-button", UIButton);
 
+export type UIButtonElement = InstanceType<typeof UIButton>;
 export default UIButton;

@@ -62,13 +62,16 @@ class UITextarea extends HTMLElement {
 
     if (!this.shadowRoot) return;
 
+    const title = this.getAttribute("title") ?? "";
+    const placeholder = this.getAttribute("placeholder") ?? "";
+
     this.shadowRoot.adoptedStyleSheets = [textareaStyles];
     this.shadowRoot.innerHTML = `<div class="container">
-      <span class="title">${this.getAttribute("textareaTitle") ?? ""}</span>
+      <span class="title">${title}</span>
       <textarea
         class="textarea"
         rows="2"
-        placeholder="${this.getAttribute("placeholder") ?? ""}"
+        placeholder="${placeholder}"
       ></textarea>
       <span class="error"></span>
     </div>`;

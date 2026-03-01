@@ -92,7 +92,7 @@ class UIInput extends HTMLElement {
 
     const size = this.getAttribute("size") || "md";
     const aside = this.getAttribute("aside");
-    const title = this.getAttribute("inputTitle") ?? "";
+    const title = this.getAttribute("title") ?? "";
     const placeholder = this.getAttribute("placeholder") ?? "";
 
     this.shadowRoot.innerHTML = `<div class="container ${size}">
@@ -154,6 +154,13 @@ class UIInput extends HTMLElement {
     this.error = this.shadowRoot?.querySelector(".error");
     this.input.addEventListener("input", this.handleInput);
     this.input.addEventListener("blur", this.handleBlur);
+  }
+
+  validateAndShowError() {
+    const { isValid } = this.validate();
+    this.handleBlur();
+
+    return isValid;
   }
 
   validate() {
