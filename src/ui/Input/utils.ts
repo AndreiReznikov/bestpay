@@ -2,6 +2,10 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
   const start = target.selectionStart || 0;
   const oldValue = target.value;
 
+  const oldRawValue = oldValue.replace(/\s/g, "");
+  const oldDigitsBeforeCursor = (oldValue.substring(0, start).match(/\d/g) || []).length;
+  const oldCommasBeforeCursor = (oldValue.substring(0, start).match(/,/g) || []).length;
+
   let rawValue = target.value.replace(/\s/g, "");
 
   const wasCommaAdded =
@@ -61,14 +65,39 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
   if (oldValue !== newValue) {
     target.value = newValue;
 
-    let newPosition = start;
+    let newPosition = 0;
 
-    if (wasCommaAdded && newValue.length > oldValue.length) {
-      newPosition = start + 1;
-    }
+    if (rawValue) {
+      let rawPos = oldDigitsBeforeCursor;
 
-    if (newValue.length < oldValue.length && start > 0) {
-      newPosition = start - 1;
+      const hasComma = rawValue.includes(',');
+      const commaRawPos = hasComma ? rawValue.indexOf(',') : Infinity;
+
+      if (oldCommasBeforeCursor > 0) {
+        rawPos = oldDigitsBeforeCursor;
+      }
+
+      if (wasCommaAdded) {
+        rawPos++;
+      }
+
+      const [integerPart, fractionPart] = rawValue.split(',');
+      const integerLength = integerPart.length;
+
+      let spacesCount = 0;
+      if (rawPos <= integerLength) {
+        for (let i = 3; i < rawPos; i += 3) {
+          spacesCount++;
+        }
+        newPosition = rawPos + spacesCount;
+      } else {
+        for (let i = 3; i <= integerLength; i += 3) {
+          spacesCount++;
+        }
+
+        const fractionPos = rawPos - integerLength - 1;
+        newPosition = integerLength + spacesCount + 1 + fractionPos;
+      }
     }
 
     newPosition = Math.min(newPosition, newValue.length);
