@@ -9,45 +9,45 @@ textareaStyles.replaceSync(`
   }
 
   .container.invalid * {
-    color: #FF3B30;
+    color: var(--color-error, #ff3b30);
   }
 
   .container.invalid .textarea {
-    border-bottom: 1px solid #FF3B30;
+    border-bottom: 1px solid var(--color-error, #ff3b30);
   }
 
   .title {
     margin-bottom: 14px;
     font-size: 12px;
-    color: #A6A6A6;
+    color: var(--color-text-primary, #a6a6a6);
   }
 
   .textarea {
     width: 100%;
     font-size: 18px;
     font-weight: 500;
-    color: #595959;
+    color: var(--color-text-secondary, #595959);
     border: none;
-    border-bottom: 1px solid #F2F2F2;
+    border-bottom: 1px solid var(--color-border, #f2f2f2);
     outline: none;
     letter-spacing: 0;
-    caret-color: #FF335F;
+    caret-color: var(--color-primary, #ff335f);
     resize: none;
   }
 
   .textarea::placeholder {
-    color: #F2F2F2;
+    color: var(--color-text-placeholder, #f2f2f2);
   }
 
   .textarea:hover {
-    border-bottom: 1px solid #FF335F;
+    border-bottom: 1px solid var(--color-border-hover, #ff335f);
   }
 
   .error {
     min-height: 1rem;
     margin-top: 4px;
     font-size: 12px;
-    color: #FF3B30;
+    color: var(--color-error, #ff3b30);
   }
 `);
 

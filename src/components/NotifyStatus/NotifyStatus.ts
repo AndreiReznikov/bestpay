@@ -15,7 +15,7 @@ notifyStatusStyles.replaceSync(`
   .text {
     font-weight: 600;
     font-size: 24px;
-    color: #595959;
+    color: var(--color-text-secondary, #595959);
   }
 `);
 

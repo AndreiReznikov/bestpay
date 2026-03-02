@@ -30,7 +30,7 @@ checkboxStyles.replaceSync(`
     width: 18px;
     height: 18px;
     background: white;
-    border: 2px solid #A6A6A6;
+    border: 2px solid var(--color-text-primary, #a6a6a6);
     border-radius: 6px;
     flex-shrink: 0;
     pointer-events: none;
@@ -50,8 +50,8 @@ checkboxStyles.replaceSync(`
   }
 
   .checkbox-container input:checked + .checkmark {
-    background: #FF335F;
-    border-color: #FF335F;
+    background: var(--color-primary, #ff335f);
+    border-color: var(--color-primary, #ff335f);
   }
 
   .checkbox-container input:focus + .checkmark {
@@ -64,7 +64,7 @@ checkboxStyles.replaceSync(`
 
   .label {
     font-size: 14px;
-    color: #595959;
+    color: var(--color-text-secondary, #595959);
     cursor: pointer;
   }
 `);

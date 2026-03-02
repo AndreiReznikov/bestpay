@@ -17,15 +17,15 @@ helpIconStyles.replaceSync(`
     height: 18px;
     border: none;
     border-radius: 50%;
-    background: #F2F2F2;
-    color: #A6A6A6;
+    background: var(--color-text-placeholder, #f2f2f2);
+    color: var(--color-text-primary, #a6a6a6);
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
   }
 
   .help-icon:hover {
-    background: #A6A6A6;
+    background: var(--color-text-primary, #a6a6a6);
     color: white;
   }
 
@@ -39,7 +39,7 @@ helpIconStyles.replaceSync(`
     margin-bottom: 5px;
     padding: 8px;
     font-size: 12px;
-    background: #595959;
+    background: var(--color-text-secondary, #595959);
     color: white;
     border-radius: 8px;
     transform: translateX(-50%);
@@ -62,7 +62,7 @@ helpIconStyles.replaceSync(`
     margin-top: -1px;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 8px solid #595959;
+    border-top: 8px solid var(--color-text-secondary, #595959);
     border-bottom: 0;
     transform: translateX(-50%);
   }

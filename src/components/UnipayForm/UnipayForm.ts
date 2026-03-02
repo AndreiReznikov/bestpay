@@ -16,11 +16,11 @@ unipayFormStyles.replaceSync(`
     gap: 32px;
     padding: 48px 56px;
     border-radius: 12px;
-    box-shadow: 0px 4px 16px 0px #40404029;
+    box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);
   }
 
   .title {
-    color: #595959;
+    color: var(--color-text-secondary, #595959);
   }
 `);
 

@@ -12,7 +12,7 @@ buttonStyles.replaceSync(`
     width: 295px;
     height: 64px;
     color: #FFF;
-    background-color: #FF335F;
+    background-color: var(--color-primary, #ff335f);
     font-size: 18px;
     font-weight: 500;
     border: none;
@@ -22,33 +22,33 @@ buttonStyles.replaceSync(`
   }
 
   .button:hover {
-    background-color: #FF446D;
-    box-shadow: 0px 0px 16px 0px #FF335F;
+    background-color: var(--color-primary-hover, #ff446d);
+    box-shadow: 0px 0px 16px 0px var(--color-primary, #ff335f);
   }
 
   .button:active {
-    background-color: #E1264F;
+    background-color: var(--color-primary-active, #e1264f);
     box-shadow: none;
   }
 
   .button.loading {
-    background-color: #FF335F;
+    background-color: var(--color-primary, #ff335f);
     pointer-events: none;
     cursor: default;
   }
 
   .button.loading:hover {
-    background-color: #FF335F;
+    background-color: var(--color-primary, #ff335f);
     box-shadow: none;
   }
 
   .button.loading:active {
-    background-color: #FF335F;
+    background-color: var(--color-primary, #ff335f);
     box-shadow: none;
   }
 
   .button:disabled {
-    background-color: #A6A6A6;
+    background-color: var(--color-text-primary, #a6a6a6);
     box-shadow: none;
     cursor: default;
   }

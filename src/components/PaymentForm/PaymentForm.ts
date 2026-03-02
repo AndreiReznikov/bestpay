@@ -37,7 +37,7 @@ paymentFormStyles.replaceSync(`
     gap: 32px;
     padding: 24px 56px;
     border-radius: 12px;
-    box-shadow: 0px 4px 16px 0px #40404029;
+    box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);;
   }
 
   .card-data-wrapper {
@@ -49,11 +49,11 @@ paymentFormStyles.replaceSync(`
     max-width: 240px;
     font-size: 11px;
     text-align: center;
-    color: #A6A6A6;
+    color: var(--color-text-primary, #a6a6a6);
   }
 
   .terms-link {
-    color: #595959;
+    color: var(--color-text-secondary, #595959);
   }
 `);
 

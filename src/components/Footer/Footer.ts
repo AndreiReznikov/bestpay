@@ -17,7 +17,7 @@ footerStyles.replaceSync(`
     align-items: center;
     gap: 24px;
     min-height: 200px;
-    background: linear-gradient(180deg, #F2F2F2 0%, rgba(242, 242, 242, 0) 100%);
+    background: linear-gradient(180deg, var(--color-text-placeholder, #f2f2f2) 0%, rgba(242, 242, 242, 0) 100%);
   }
 
   .logos-list {
@@ -59,7 +59,7 @@ footerStyles.replaceSync(`
     position: relative;
     padding-left: 24px;
     font-size: 11px;
-    color: #A6A6A6;
+    color: var(--color-text-primary, #a6a6a6);
   }
 
   .info::before {
@@ -78,7 +78,7 @@ footerStyles.replaceSync(`
 
   .order {
     font-size: 11px;
-    color: #A6A6A6;
+    color: var(--color-text-primary, #a6a6a6);
   }
 `);
 
