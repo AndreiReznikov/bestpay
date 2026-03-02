@@ -255,7 +255,7 @@ class CPaymentForm extends HTMLElement {
       }
 
       setTimeout(() => {
-        window.location.href = `/notify.html?status=${status}`;
+        window.location.href = `${import.meta.env.BASE_URL}notify.html?status=${status}`;
       }, 500);
     }
   }

@@ -125,7 +125,7 @@ class CUnipayForm extends HTMLElement {
       this.button.loading = true;
 
       setTimeout(() => {
-        window.location.href = "/payment.html";
+        window.location.href = `${import.meta.env.BASE_URL}payment.html`;
       }, 500);
     }
   };
