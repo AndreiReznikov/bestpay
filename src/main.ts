@@ -1,15 +1,11 @@
-import "./components/PaymentForm";
-import "./components/UnipayForm";
-import "./components/Footer";
-import "./components/NotifyStatus";
-import "./ui/Button";
-import "./ui/Checkbox";
-import "./ui/Input";
-import "./ui/Textarea";
-import "./ui/HelpIcon";
-import "./style.css";
+import "@components/PaymentForm";
+import "@components/UnipayForm";
+import "@components/Footer";
+import "@components/NotifyStatus";
+import "@ui/Button";
+import "@ui/Checkbox";
+import "@ui/Input";
+import "@ui/Textarea";
+import "@ui/HelpIcon";
 
-// document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-//   <div>
-//   </div>
-// `;
+import "./style.css";

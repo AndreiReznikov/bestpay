@@ -1,5 +1,12 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@ui/*": ["src/ui/*"],
+      "@components/*": ["src/components/*"],
+      "@assets/*": ["src/assets/*"],
+    },
     "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "ESNext",

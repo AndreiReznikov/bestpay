@@ -10,4 +10,12 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      "@": "/src",
+      "@ui": "/src/ui",
+      "@components": "/src/components",
+      "@assets": "/src/assets",
+    },
+  },
 });

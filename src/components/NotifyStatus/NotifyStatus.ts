@@ -1,6 +1,6 @@
-import successImage from "../../assets/statuses/success.png";
-import errorImage from "../../assets/statuses/error.png";
-import notPayedImage from "../../assets/statuses/not-payed.png";
+import successImage from "@assets/statuses/success.png";
+import errorImage from "@assets/statuses/error.png";
+import notPayedImage from "@assets/statuses/not-payed.png";
 
 const notifyStatusStyles = new CSSStyleSheet();
 

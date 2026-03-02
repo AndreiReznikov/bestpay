@@ -1,7 +1,7 @@
-import logoVisaSrc from "../../assets/logos/visa-logo.svg";
-import logoMasterCardSrc from "../../assets/logos/master-card-logo.svg";
-import logoMirSrc from "../../assets/logos/mir-logo.svg";
-import iconLockSrc from "../../assets/icons/ic-lock.svg";
+import logoVisaSrc from "@assets/logos/visa-logo.svg";
+import logoMasterCardSrc from "@assets/logos/master-card-logo.svg";
+import logoMirSrc from "@assets/logos/mir-logo.svg";
+import iconLockSrc from "@assets/icons/ic-lock.svg";
 
 const footerStyles = new CSSStyleSheet();
 

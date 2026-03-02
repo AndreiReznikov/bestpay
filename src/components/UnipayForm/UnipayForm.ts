@@ -1,6 +1,6 @@
-import type { UIButton } from "../../ui/Button";
-import type { UIInput } from "../../ui/Input";
-import type { UITextarea } from "../../ui/Textarea";
+import type { UIButton } from "@ui/Button";
+import type { UIInput } from "@ui/Input";
+import type { UITextarea } from "@ui/Textarea";
 
 const unipayFormStyles = new CSSStyleSheet();
 
