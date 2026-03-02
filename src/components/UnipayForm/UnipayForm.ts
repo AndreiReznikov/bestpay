@@ -70,17 +70,19 @@ class CUnipayForm extends HTMLElement {
     this.emailInput = this.shadowRoot?.querySelector(".email") || null;
     this.textarea = this.shadowRoot?.querySelector(".textarea") || null;
 
-    this.button.addEventListener("click", () => {
-      const isValid = this.validate();
+    this.button?.addEventListener("click", this.handleSubmit.bind(this));
+  }
 
-      if (isValid) {
-        this.button.loading = true;
+  handleSubmit() {
+    const isValid = this.validate();
 
-        setTimeout(() => {
-          window.location.href = "/payment.html";
-        }, 500);
-      }
-    });
+    if (isValid) {
+      this.button.loading = true;
+
+      setTimeout(() => {
+        window.location.href = "/payment.html";
+      }, 500);
+    }
   }
 
   validate() {
