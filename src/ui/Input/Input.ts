@@ -1,4 +1,5 @@
 import {
+  checkCard,
   checkIsDateValid,
   maskCardInput,
   maskCvvInput,
@@ -198,11 +199,7 @@ class UIInput extends HTMLElement {
       error = "Поле обязательно";
     }
 
-    if (
-      this.validators.card &&
-      value &&
-      !this.cardCheck(value.replace(/\s/g, ""))
-    ) {
+    if (this.validators.card && value && !checkCard(value.replace(/\s/g, ""))) {
       error = "Неверный номер карты";
     }
 
@@ -240,27 +237,6 @@ class UIInput extends HTMLElement {
     };
   }
 
-  cardCheck(cardNumber: string) {
-    if (!/^\d+$/.test(cardNumber)) return false;
-
-    let sum = 0;
-    let shouldDouble = false;
-
-    for (let i = cardNumber.length - 1; i >= 0; i--) {
-      let digit = parseInt(cardNumber.charAt(i));
-
-      if (shouldDouble) {
-        digit *= 2;
-        if (digit > 9) digit -= 9;
-      }
-
-      sum += digit;
-      shouldDouble = !shouldDouble;
-    }
-
-    return sum % 10 === 0;
-  }
-
   getValidators() {
     return {
       required: this.hasAttribute("required"),
@@ -272,6 +248,10 @@ class UIInput extends HTMLElement {
       date: this.hasAttribute("date"),
       cvv: this.hasAttribute("cvv"),
     };
+  }
+
+  get value() {
+    return this.input?.value;
   }
 }
 

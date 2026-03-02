@@ -204,6 +204,10 @@ class UITextarea extends HTMLElement {
       maxLength: this.getAttribute("maxlength"),
     };
   }
+
+  get value() {
+    return this.textarea?.value;
+  }
 }
 
 customElements.define("ui-textarea", UITextarea);

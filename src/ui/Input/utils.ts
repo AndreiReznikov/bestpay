@@ -3,8 +3,11 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
   const oldValue = target.value;
 
   const oldRawValue = oldValue.replace(/\s/g, "");
-  const oldDigitsBeforeCursor = (oldValue.substring(0, start).match(/\d/g) || []).length;
-  const oldCommasBeforeCursor = (oldValue.substring(0, start).match(/,/g) || []).length;
+  const oldDigitsBeforeCursor = (
+    oldValue.substring(0, start).match(/\d/g) || []
+  ).length;
+  const oldCommasBeforeCursor = (oldValue.substring(0, start).match(/,/g) || [])
+    .length;
 
   let rawValue = target.value.replace(/\s/g, "");
 
@@ -70,8 +73,8 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
     if (rawValue) {
       let rawPos = oldDigitsBeforeCursor;
 
-      const hasComma = rawValue.includes(',');
-      const commaRawPos = hasComma ? rawValue.indexOf(',') : Infinity;
+      const hasComma = rawValue.includes(",");
+      const commaRawPos = hasComma ? rawValue.indexOf(",") : Infinity;
 
       if (oldCommasBeforeCursor > 0) {
         rawPos = oldDigitsBeforeCursor;
@@ -81,7 +84,7 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
         rawPos++;
       }
 
-      const [integerPart, fractionPart] = rawValue.split(',');
+      const [integerPart, fractionPart] = rawValue.split(",");
       const integerLength = integerPart.length;
 
       let spacesCount = 0;
@@ -103,6 +106,27 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
     newPosition = Math.min(newPosition, newValue.length);
     target.setSelectionRange(newPosition, newPosition);
   }
+};
+
+export const checkCard = (cardNumber: string) => {
+  if (!/^\d+$/.test(cardNumber)) return false;
+
+  let sum = 0;
+  let shouldDouble = false;
+
+  for (let i = cardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cardNumber.charAt(i));
+
+    if (shouldDouble) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+
+    sum += digit;
+    shouldDouble = !shouldDouble;
+  }
+
+  return sum % 10 === 0;
 };
 
 export const maskCardInput = (target: HTMLInputElement) => {
@@ -142,7 +166,7 @@ export const maskDateInput = (target: HTMLInputElement) => {
 };
 
 export const maskCvvInput = (target: HTMLInputElement) => {
-  target.value = target.value.replace(/\D/g, '');
+  target.value = target.value.replace(/\D/g, "");
 };
 
 export const checkIsDateValid = (month: number, year: number) => {
