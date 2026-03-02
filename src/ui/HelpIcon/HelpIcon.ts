@@ -24,9 +24,11 @@ helpIconStyles.replaceSync(`
     cursor: pointer;
   }
 
-  .help-icon:hover {
-    background: var(--color-text-primary, #a6a6a6);
-    color: white;
+  @media (hover: hover) {
+    .help-icon:hover {
+      background: var(--color-text-primary, #a6a6a6);
+      color: white;
+    }
   }
 
   .tooltip {
@@ -47,9 +49,14 @@ helpIconStyles.replaceSync(`
     z-index: 1000;
   }
 
-  .help-icon:hover + .tooltip,
   .help-icon:focus + .tooltip {
     visibility: visible;
+  }
+
+  @media (hover: hover) {
+    .help-icon:hover + .tooltip {
+      visibility: visible;
+    }
   }
 
   .tooltip::after {

@@ -66,8 +66,10 @@ inputStyles.replaceSync(`
     color: var(--color-text-placeholder, #f2f2f2);
   }
 
-  .input:hover {
-    border-bottom: 1px solid var(--color-border-hover, #ff335f);
+  @media (hover: hover) {
+    .input:hover {
+      border-bottom: 1px solid var(--color-border-hover, #ff335f);
+    }
   }
 
   .error {

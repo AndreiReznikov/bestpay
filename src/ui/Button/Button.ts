@@ -21,9 +21,11 @@ buttonStyles.replaceSync(`
     cursor: pointer;
   }
 
-  .button:hover {
-    background-color: var(--color-primary-hover, #ff446d);
-    box-shadow: 0px 0px 16px 0px var(--color-primary, #ff335f);
+  @media (hover: hover) {
+    .button:hover {
+      background-color: var(--color-primary-hover, #ff446d);
+      box-shadow: 0px 0px 16px 0px var(--color-primary, #ff335f);
+    }
   }
 
   .button:active {
@@ -37,9 +39,11 @@ buttonStyles.replaceSync(`
     cursor: default;
   }
 
-  .button.loading:hover {
-    background-color: var(--color-primary, #ff335f);
-    box-shadow: none;
+  @media (hover: hover) {
+    .button.loading:hover {
+      background-color: var(--color-primary, #ff335f);
+      box-shadow: none;
+    }
   }
 
   .button.loading:active {
