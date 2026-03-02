@@ -124,48 +124,34 @@ class UITextarea extends HTMLElement {
     if (!this.textarea) return;
 
     const value = this.textarea.value;
-    const currentRows = this.textarea.rows;
+    const start = this.textarea.selectionStart;
+    const end = this.textarea.selectionEnd;
 
-    const lineBreaks = (value.match(/\n/g) || []).length;
+    this.textarea.style.height = "auto";
+    this.textarea.style.overflow = "hidden";
 
-    let neededRows = minRows;
+    const lineHeight =
+      parseInt(getComputedStyle(this.textarea).lineHeight) || 27;
 
-    if (value) {
-      neededRows = 1;
+    const scrollHeight = this.textarea.scrollHeight;
 
-      neededRows += lineBreaks;
+    let neededRows = Math.ceil(scrollHeight / lineHeight);
 
-      if (lineBreaks > 0) {
-        const lastLine = value.split("\n").pop() || "";
-
-        const span = document.createElement("span");
-        span.style.font = getComputedStyle(this.textarea).font;
-        span.style.visibility = "hidden";
-        span.style.position = "absolute";
-        span.style.whiteSpace = "nowrap";
-        span.textContent = lastLine;
-        document.body.appendChild(span);
-
-        const textWidth = span.offsetWidth;
-        const textareaWidth = this.textarea.clientWidth - 20;
-
-        document.body.removeChild(span);
-
-        if (textWidth > textareaWidth) {
-          neededRows++;
-        }
-      }
+    if (!value) {
+      neededRows = minRows;
     }
 
-    let newRows = currentRows;
-
-    if (neededRows > currentRows) {
-      newRows = Math.min(maxRows, neededRows);
-    } else if (neededRows < currentRows && currentRows > minRows) {
-      newRows = Math.max(minRows, neededRows);
-    }
+    const newRows = Math.min(maxRows, Math.max(minRows, neededRows));
 
     this.textarea.rows = newRows;
+
+    if (neededRows > maxRows) {
+      this.textarea.style.overflowY = "auto";
+    } else {
+      this.textarea.style.overflowY = "hidden";
+    }
+
+    this.textarea.setSelectionRange(start, end);
   }
 
   validate() {
