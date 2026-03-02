@@ -2,7 +2,14 @@ import type { UIButton } from "@ui/Button";
 import type { UICheckbox } from "@ui/Checkbox";
 import bankLogoSrc from "@assets/logos/bank-logo.svg";
 import type { UIInput } from "@/ui/Input";
-import { maskCardInput, maskCvvInput, maskDateInput } from "./utils";
+import {
+  maskCardInput,
+  maskCvvInput,
+  maskDateInput,
+  validateCard,
+  validateCvv,
+  validateDate,
+} from "./utils";
 
 const paymentFormStyles = new CSSStyleSheet();
 
@@ -139,8 +146,23 @@ class CPaymentForm extends HTMLElement {
     this.button?.addEventListener("click", this.handleSubmit.bind(this));
 
     this.bindMasks();
+    this.bindValidation();
 
     this.updateButtonState();
+  }
+
+  private bindValidation() {
+    setTimeout(() => {
+      if (this.cardInput) {
+        this.cardInput.customValidation = validateCard;
+      }
+      if (this.dateInput) {
+        this.dateInput.customValidation = validateDate;
+      }
+      if (this.cvvInput) {
+        this.cvvInput.customValidation = validateCvv;
+      }
+    });
   }
 
   private bindMasks() {

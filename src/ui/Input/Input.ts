@@ -1,8 +1,3 @@
-import {
-  checkCard,
-  checkIsDateValid,
-} from "./utils";
-
 const inputStyles = new CSSStyleSheet();
 
 inputStyles.replaceSync(`
@@ -89,6 +84,7 @@ class UIInput extends HTMLElement {
   error: HTMLSpanElement | null = null;
   validators: Record<string, string | boolean | null> = {};
   customMask: ((target: HTMLInputElement) => void) | null = null;
+  customValidation: ((value: string) => string) | null = null;
 
   constructor() {
     super();
@@ -168,6 +164,10 @@ class UIInput extends HTMLElement {
     const value = this.input?.value;
     let error = "";
 
+    if (value && this.customValidation) {
+      error = this.customValidation(value);
+    }
+
     if (
       this.validators.minLength &&
       value &&
@@ -188,36 +188,12 @@ class UIInput extends HTMLElement {
       error = "Поле обязательно";
     }
 
-    if (this.validators.card && value && !checkCard(value.replace(/\s/g, ""))) {
-      error = "Неверный номер карты";
-    }
-
     if (
       this.validators.email &&
       value &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
     ) {
       error = "Неверный Email";
-    }
-
-    if (this.validators.date && value) {
-      if (!/^\d{2}\/\d{2}$/.test(value)) {
-        error = "Неверный формат MM/YY";
-      } else {
-        const [month, year] = value.split("/").map(Number);
-
-        if (month < 1 || month > 12) {
-          error = "Неверно введён месяц";
-        }
-
-        if (!error && !checkIsDateValid(month, year)) {
-          error = "Срок действия карты истёк";
-        }
-      }
-    }
-
-    if (this.validators.cvv && value && value.length < 3) {
-      error = "Минимум три цифры";
     }
 
     return {

@@ -37,3 +37,69 @@ export const maskDateInput = (target: HTMLInputElement) => {
 export const maskCvvInput = (target: HTMLInputElement) => {
   target.value = target.value.replace(/\D/g, "");
 };
+
+export const checkCard = (cardNumber: string) => {
+  if (!/^\d+$/.test(cardNumber)) return false;
+
+  let sum = 0;
+  let shouldDouble = false;
+
+  for (let i = cardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cardNumber.charAt(i));
+
+    if (shouldDouble) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+
+    sum += digit;
+    shouldDouble = !shouldDouble;
+  }
+
+  return sum % 10 === 0;
+};
+
+export const checkIsDateValid = (month: number, year: number) => {
+  const now = new Date();
+  const currentYear = now.getFullYear() % 100;
+  const currentMonth = now.getMonth() + 1;
+
+  if (year < currentYear) return false;
+  if (year === currentYear && month < currentMonth) return false;
+
+  return true;
+};
+
+export const validateCard = (value: string): string => {
+  if (checkCard(value.replace(/\s/g, ""))) {
+    return "";
+  }
+
+  return "Неверный номер карты";
+};
+
+export const validateDate = (value: string): string => {
+  if (!/^\d{2}\/\d{2}$/.test(value)) {
+    return "Неверный формат MM/YY";
+  } else {
+    const [month, year] = value.split("/").map(Number);
+
+    if (month < 1 || month > 12) {
+      return "Неверно введён месяц";
+    }
+
+    if (!checkIsDateValid(month, year)) {
+      return "Срок действия карты истёк";
+    }
+  }
+
+  return "";
+};
+
+export const validateCvv = (value: string): string => {
+  if (value.length < 3) {
+    return "Минимум три цифры";
+  }
+
+  return "";
+};
