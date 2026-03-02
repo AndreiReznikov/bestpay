@@ -26,10 +26,9 @@ unipayFormStyles.replaceSync(`
 `);
 
 class CUnipayForm extends HTMLElement {
-  button: UIButton | null = null;
-  moneyInput: UIInput | null = null;
-  emailInput: UIInput | null = null;
-  textarea: UITextarea | null = null;
+  private button: UIButton | null = null;
+  private moneyInput: UIInput | null = null;
+  private textarea: UITextarea | null = null;
 
   constructor() {
     super();
@@ -62,27 +61,26 @@ class CUnipayForm extends HTMLElement {
       ></ui-textarea>
       <ui-button class="button">Создать</ui-button>
     </form>`;
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  connectedCallback() {
-    this.button = this.shadowRoot?.querySelector(".button") || null;
-    this.moneyInput = this.shadowRoot?.querySelector(".money") || null;
-    this.emailInput = this.shadowRoot?.querySelector(".email") || null;
-    this.textarea = this.shadowRoot?.querySelector(".textarea") || null;
+  public connectedCallback(): void {
+    this.button = this.shadowRoot?.querySelector(".button") ?? null;
+    this.moneyInput = this.shadowRoot?.querySelector(".money") ?? null;
+    this.textarea = this.shadowRoot?.querySelector(".textarea") ?? null;
 
     this.bindMasks();
     this.bindValidation();
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-
     this.button?.addEventListener("click", this.handleSubmit);
   }
 
-  disconnectedCallback() {
-    this.button?.addEventListener("click", this.handleSubmit);
+  public disconnectedCallback(): void {
+    this.button?.removeEventListener("click", this.handleSubmit);
   }
 
-  private bindValidation() {
+  private bindValidation(): void {
     setTimeout(() => {
       if (this.moneyInput) {
         this.moneyInput.customValidation = validateMoney;
@@ -90,36 +88,38 @@ class CUnipayForm extends HTMLElement {
       if (this.textarea) {
         this.textarea.customValidation = validateDescription;
       }
-    });
+    }, 0);
   }
 
-  private bindMasks() {
+  private bindMasks(): void {
     setTimeout(() => {
       if (this.moneyInput) {
         this.moneyInput.customMask = maskMoneyInput;
       }
-    });
+    }, 0);
   }
 
-  private handleSubmit() {
+  private handleSubmit = (e: Event): void => {
+    e.preventDefault();
+
     const isValid = this.validate();
 
-    if (isValid) {
+    if (isValid && this.button) {
       this.button.loading = true;
 
       setTimeout(() => {
         window.location.href = "/payment.html";
       }, 500);
     }
-  }
+  };
 
-  validate() {
+  private validate(): boolean {
     const allElements =
-      this.shadowRoot?.querySelectorAll("ui-input, ui-textarea") || [];
+      this.shadowRoot?.querySelectorAll("ui-input, ui-textarea") ?? [];
 
     let isValid = true;
 
-    allElements.forEach((element) => {
+    allElements.forEach((element: Element) => {
       if (typeof (element as any).validateAndShowError === "function") {
         const result = (element as any).validateAndShowError();
         isValid = isValid && result;

@@ -1,5 +1,4 @@
 import type { UIButton } from "@ui/Button";
-import type { UICheckbox } from "@ui/Checkbox";
 import bankLogoSrc from "@assets/logos/bank-logo.svg";
 import type { UIInput } from "@/ui/Input";
 import {
@@ -66,14 +65,13 @@ paymentFormStyles.replaceSync(`
   }
 `);
 
-const sum = "12 500₽";
+const SUM: string = "12 500₽";
 
 class CPaymentForm extends HTMLElement {
-  button: UIButton | null = null;
-  cardInput: UIInput | null = null;
-  dateInput: UIInput | null = null;
-  cvvInput: UIInput | null = null;
-  checkbox: UICheckbox | null = null;
+  private button: UIButton | null = null;
+  private cardInput: UIInput | null = null;
+  private dateInput: UIInput | null = null;
+  private cvvInput: UIInput | null = null;
 
   constructor() {
     super();
@@ -120,7 +118,7 @@ class CPaymentForm extends HTMLElement {
         label="Сохранить карту для следующих покупок"
         checked
       ></ui-checkbox>
-      <ui-button class="button" disabled>Оплатить ${sum}</ui-button>
+      <ui-button class="button" disabled>Оплатить ${SUM}</ui-button>
       <p class="terms">
         Нажимая на кнопку «‎Перевести»‎, вы соглашаетесь
         с&nbsp;<a
@@ -132,12 +130,11 @@ class CPaymentForm extends HTMLElement {
     </form>`;
   }
 
-  connectedCallback() {
+  public connectedCallback(): void {
     this.button = this.shadowRoot?.querySelector(".button") || null;
     this.cardInput = this.shadowRoot?.querySelector(".card") || null;
     this.dateInput = this.shadowRoot?.querySelector(".date") || null;
     this.cvvInput = this.shadowRoot?.querySelector(".cvv") || null;
-    this.checkbox = this.shadowRoot?.querySelector(".checkbox") || null;
 
     this.updateButtonState = this.updateButtonState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -151,12 +148,12 @@ class CPaymentForm extends HTMLElement {
     this.updateButtonState();
   }
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     this.shadowRoot?.removeEventListener("input", this.updateButtonState);
     this.button?.removeEventListener("click", this.handleSubmit);
   }
 
-  private bindValidation() {
+  private bindValidation(): void {
     setTimeout(() => {
       if (this.cardInput) {
         this.cardInput.customValidation = validateCard;
@@ -170,7 +167,7 @@ class CPaymentForm extends HTMLElement {
     });
   }
 
-  private bindMasks() {
+  private bindMasks(): void {
     setTimeout(() => {
       if (this.cardInput) {
         this.cardInput.customMask = maskCardInput;
@@ -184,7 +181,7 @@ class CPaymentForm extends HTMLElement {
     });
   }
 
-  private updateButtonState() {
+  private updateButtonState(): void {
     if (!this.button) return;
 
     const inputs = this.shadowRoot?.querySelectorAll("ui-input") || [];
@@ -196,7 +193,7 @@ class CPaymentForm extends HTMLElement {
     this.button.disabled = !allValid;
   }
 
-  private handleSubmit(e: Event) {
+  private handleSubmit(e: Event): void {
     e.preventDefault();
 
     const inputs = this.shadowRoot?.querySelectorAll("ui-input") || [];

@@ -54,11 +54,11 @@ textareaStyles.replaceSync(`
 `);
 
 class UITextarea extends HTMLElement {
-  container: HTMLDivElement | null = null;
-  textarea: HTMLTextAreaElement | null = null;
-  error: HTMLSpanElement | null = null;
-  validators: Record<string, string | boolean | null> = {};
-  customValidation: ((value: string) => string) | null = null;
+  private container: HTMLDivElement | null = null;
+  private textarea: HTMLTextAreaElement | null = null;
+  private error: HTMLSpanElement | null = null;
+  private validators: Record<string, string | boolean | null> = {};
+  public customValidation: ((value: string) => string) | null = null;
 
   constructor() {
     super();
@@ -86,36 +86,42 @@ class UITextarea extends HTMLElement {
     this.validators = this.getValidators();
   }
 
-  validateAndShowError(): boolean {
+  public validateAndShowError(): boolean {
     const { isValid } = this.validate();
     this.handleBlur();
 
     return isValid;
   }
 
-  handleInput() {
+  private handleInput = (): void => {
+    if (!this.error || !this.container) return;
+
     this.error.textContent = "";
-    this.container?.classList.remove("invalid");
+    this.container.classList.remove("invalid");
     this.adjustHeight(2, 3);
   }
 
-  handleBlur() {
+  private handleBlur = (): void => {
+    if (!this.error || !this.container) return;
+
     const { error, isValid } = this.validate();
 
     if (!isValid) {
       this.error.textContent = error;
-      this.container?.classList.add("invalid");
+      this.container.classList.add("invalid");
       return;
     }
 
-    this.container?.classList.remove("invalid");
-    this.container?.classList.add("valid");
+    this.container.classList.remove("invalid");
+    this.container.classList.add("valid");
   }
 
-  connectedCallback() {
-    this.container = this.shadowRoot?.querySelector(".container");
-    this.textarea = this.shadowRoot?.querySelector(".textarea");
-    this.error = this.shadowRoot?.querySelector(".error");
+  public connectedCallback(): void {
+    this.container = this.shadowRoot?.querySelector(".container") ?? null;
+    this.textarea = this.shadowRoot?.querySelector(".textarea") ?? null;
+    this.error = this.shadowRoot?.querySelector(".error") ?? null;
+
+    if (!this.textarea || !this.error || !this.container) return;
 
     this.textarea.addEventListener("input", this.handleInput);
     this.textarea.addEventListener("blur", this.handleBlur);
@@ -123,12 +129,14 @@ class UITextarea extends HTMLElement {
     setTimeout(() => this.adjustHeight(2, 3), 0);
   }
 
-  disconnectedCallback() {
-    this.textarea.removeEventListener("input", this.handleInput);
-    this.textarea.removeEventListener("blur", this.handleBlur);
+  public disconnectedCallback(): void {
+    if (this.textarea) {
+      this.textarea.removeEventListener("input", this.handleInput);
+      this.textarea.removeEventListener("blur", this.handleBlur);
+    }
   }
 
-  private adjustHeight(minRows = 2, maxRows = 3) {
+  private adjustHeight(minRows = 2, maxRows = 3): void {
     if (!this.textarea) return;
 
     const value = this.textarea.value;
@@ -162,8 +170,8 @@ class UITextarea extends HTMLElement {
     this.textarea.setSelectionRange(start, end);
   }
 
-  validate() {
-    const value = this.textarea?.value;
+  public validate(): { isValid: boolean; error: string } {
+    const value = this.textarea?.value ?? "";
     let error = "";
 
     if (value && this.customValidation) {
@@ -180,13 +188,13 @@ class UITextarea extends HTMLElement {
     };
   }
 
-  getValidators() {
+  private getValidators(): Record<string, string | boolean | null> {
     return {
       required: this.hasAttribute("required"),
     };
   }
 
-  get value() {
+  public get value(): string | undefined {
     return this.textarea?.value;
   }
 }

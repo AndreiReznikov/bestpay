@@ -92,19 +92,17 @@ buttonStyles.replaceSync(`
 `);
 
 class UIButton extends HTMLElement {
-  button: HTMLButtonElement | null = null;
-
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
     this.render();
   }
 
-  static get observedAttributes() {
+  public static get observedAttributes(): string[] {
     return ["loading", "disabled"];
   }
 
-  attributeChangedCallback(
+  public attributeChangedCallback(
     _: string,
     oldValue: string | null,
     newValue: string | null,
@@ -113,11 +111,11 @@ class UIButton extends HTMLElement {
     this.render();
   }
 
-  connectedCallback() {
+  public connectedCallback(): void {
     this.render();
   }
 
-  render() {
+  private render(): void {
     const loading = this.hasAttribute("loading");
     const disabled = this.hasAttribute("disabled");
 
@@ -129,15 +127,13 @@ class UIButton extends HTMLElement {
         ${loading ? '<span class="spinner"></span>' : "<slot></slot>"}
       </button>
     `;
-
-    this.button = this.shadowRoot.querySelector(".button");
   }
 
-  get loading() {
+  public get loading(): boolean {
     return this.hasAttribute("loading");
   }
 
-  set loading(value: boolean) {
+  public set loading(value: boolean) {
     if (value) {
       this.setAttribute("loading", "");
     } else {
@@ -145,11 +141,11 @@ class UIButton extends HTMLElement {
     }
   }
 
-  get disabled() {
+  public get disabled(): boolean {
     return this.hasAttribute("disabled");
   }
 
-  set disabled(value: boolean) {
+  public set disabled(value: boolean) {
     if (value) {
       this.setAttribute("disabled", "");
     } else {

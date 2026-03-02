@@ -70,7 +70,7 @@ checkboxStyles.replaceSync(`
 `);
 
 class UICheckbox extends HTMLElement {
-  checkbox: HTMLInputElement | null = null;
+  private checkbox: HTMLInputElement | null = null;
 
   constructor() {
     super();
@@ -101,15 +101,15 @@ class UICheckbox extends HTMLElement {
     `;
   }
 
-  connectedCallback() {
-    this.checkbox = this.shadowRoot?.querySelector(".checkbox");
+  public connectedCallback(): void {
+    this.checkbox = this.shadowRoot?.querySelector(".checkbox") ?? null;
   }
 
-  get checked() {
+  public get checked(): boolean {
     return this.checkbox?.checked || false;
   }
 
-  set checked(value) {
+  public set checked(value: boolean) {
     if (this.checkbox) {
       this.checkbox.checked = value;
     }

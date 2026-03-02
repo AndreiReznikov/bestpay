@@ -82,7 +82,7 @@ footerStyles.replaceSync(`
   }
 `);
 
-const orderNumber = "112480";
+const ORDER_NUMBER = "112480";
 
 class CFooter extends HTMLElement {
   constructor() {
@@ -105,7 +105,7 @@ class CFooter extends HTMLElement {
           <span class="info">Данные банковской карты будут переданы в зашифрованном виде</span>
         </div>
         <div class="order-wrapper">
-          <span class="order">Заказ №${orderNumber}</span>
+          <span class="order">Заказ №${ORDER_NUMBER}</span>
         </div>
       </footer>
     `;

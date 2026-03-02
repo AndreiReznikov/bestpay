@@ -81,12 +81,12 @@ inputStyles.replaceSync(`
 `);
 
 class UIInput extends HTMLElement {
-  container: HTMLDivElement | null = null;
-  input: HTMLInputElement | null = null;
-  error: HTMLSpanElement | null = null;
-  validators: Record<string, string | boolean | null> = {};
-  customMask: ((target: HTMLInputElement) => void) | null = null;
-  customValidation: ((value: string) => string) | null = null;
+  private container: HTMLDivElement | null = null;
+  private input: HTMLInputElement | null = null;
+  private error: HTMLSpanElement | null = null;
+  private validators: Record<string, string | boolean | null> = {};
+  public customMask: ((target: HTMLInputElement) => void) | null = null;
+  public customValidation: ((value: string) => string) | null = null;
 
   constructor() {
     super();
@@ -118,52 +118,64 @@ class UIInput extends HTMLElement {
     this.validators = this.getValidators();
   }
 
-  handleInput(e: Event) {
+  private handleInput(e: Event): void {
     const target = e.target as HTMLInputElement;
 
-    this.customMask?.(target);
+    if (this.customMask) {
+      this.customMask(target);
+    }
 
-    this.error.textContent = "";
-    this.container?.classList.remove("invalid");
+    if (this.error) {
+      this.error.textContent = "";
+    }
+
+    if (this.container) {
+      this.container.classList.remove("invalid");
+    }
   }
 
-  handleBlur() {
+  private handleBlur(): void {
+    if (!this.error || !this.container) return;
+
     const { error, isValid } = this.validate();
 
     if (!isValid) {
       this.error.textContent = error;
-      this.container?.classList.add("invalid");
-
+      this.container.classList.add("invalid");
       return;
     }
 
-    this.container?.classList.remove("invalid");
-    this.container?.classList.add("valid");
+    this.container.classList.remove("invalid");
+    this.container.classList.add("valid");
   }
 
-  connectedCallback() {
-    this.container = this.shadowRoot?.querySelector(".container");
-    this.input = this.shadowRoot?.querySelector(".input");
-    this.error = this.shadowRoot?.querySelector(".error");
+  public connectedCallback(): void {
+    this.container = this.shadowRoot?.querySelector(".container") ?? null;
+    this.input = this.shadowRoot?.querySelector(".input") ?? null;
+    this.error = this.shadowRoot?.querySelector(".error") ?? null;
+
+    if (!this.input || !this.error || !this.container) return;
 
     this.input.addEventListener("input", this.handleInput);
     this.input.addEventListener("blur", this.handleBlur);
   }
 
-  disconnectedCallback() {
-    this.input.removeEventListener("input", this.handleInput);
-    this.input.removeEventListener("blur", this.handleBlur);
+  public disconnectedCallback(): void {
+    if (this.input) {
+      this.input.removeEventListener("input", this.handleInput);
+      this.input.removeEventListener("blur", this.handleBlur);
+    }
   }
 
-  validateAndShowError(): boolean {
+  public validateAndShowError(): boolean {
     const { isValid } = this.validate();
     this.handleBlur();
 
     return isValid;
   }
 
-  validate() {
-    const value = this.input?.value;
+  public validate(): { isValid: boolean; error: string } {
+    const value = this.input?.value ?? "";
     let error = "";
 
     if (value && this.customValidation) {
@@ -176,7 +188,7 @@ class UIInput extends HTMLElement {
 
     const notEmail =
       this.validators.email &&
-      value &&
+      !!value &&
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
     if (notEmail) {
@@ -189,14 +201,14 @@ class UIInput extends HTMLElement {
     };
   }
 
-  getValidators() {
+  private getValidators(): Record<string, string | boolean | null> {
     return {
       required: this.hasAttribute("required"),
       email: this.hasAttribute("email"),
     };
   }
 
-  get value() {
+  public get value(): string | undefined {
     return this.input?.value;
   }
 }
