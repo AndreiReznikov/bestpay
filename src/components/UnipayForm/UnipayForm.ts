@@ -1,7 +1,7 @@
 import type { UIButton } from "@ui/Button";
 import type { UIInput } from "@ui/Input";
 import type { UITextarea } from "@ui/Textarea";
-import { maskMoneyInput } from "./utils";
+import { maskMoneyInput, validateDescription, validateMoney } from "./utils";
 
 const unipayFormStyles = new CSSStyleSheet();
 
@@ -58,7 +58,6 @@ class CUnipayForm extends HTMLElement {
         class="textarea"
         title="Описание"
         placeholder="Что-то о заказе"
-        maxLength="200"
         required
       ></ui-textarea>
       <ui-button class="button">Создать</ui-button>
@@ -72,8 +71,20 @@ class CUnipayForm extends HTMLElement {
     this.textarea = this.shadowRoot?.querySelector(".textarea") || null;
 
     this.bindMasks();
+    this.bindValidation();
 
     this.button?.addEventListener("click", this.handleSubmit.bind(this));
+  }
+
+  private bindValidation() {
+    setTimeout(() => {
+      if (this.moneyInput) {
+        this.moneyInput.customValidation = validateMoney;
+      }
+      if (this.textarea) {
+        this.textarea.customValidation = validateDescription;
+      }
+    });
   }
 
   private bindMasks() {

@@ -56,6 +56,7 @@ class UITextarea extends HTMLElement {
   textarea: HTMLTextAreaElement | null = null;
   error: HTMLSpanElement | null = null;
   validators: Record<string, string | boolean | null> = {};
+  customValidation: ((value: string) => string) | null = null;
 
   constructor() {
     super();
@@ -171,18 +172,8 @@ class UITextarea extends HTMLElement {
     const value = this.textarea?.value;
     let error = "";
 
-    if (
-      this.validators.minLength &&
-      value &&
-      value.length < Number(this.validators.minLength)
-    ) {
-      error = `Должно быть не менее ${this.validators.minLength} символов`;
-    } else if (
-      this.validators.maxLength &&
-      value &&
-      value.length > Number(this.validators.maxLength)
-    ) {
-      error = `Должно быть не более ${this.validators.maxLength} символов`;
+    if (value && this.customValidation) {
+      error = this.customValidation(value);
     }
 
     if (this.validators.required && !value) {
@@ -198,8 +189,6 @@ class UITextarea extends HTMLElement {
   getValidators() {
     return {
       required: this.hasAttribute("required"),
-      minLength: this.getAttribute("minlength"),
-      maxLength: this.getAttribute("maxlength"),
     };
   }
 

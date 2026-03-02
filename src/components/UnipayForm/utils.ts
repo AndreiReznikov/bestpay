@@ -1,7 +1,7 @@
 export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
   const start = target.selectionStart || 0;
   const oldValue = target.value;
-  
+
   const oldDigitsBeforeCursor = (
     oldValue.substring(0, start).match(/\d/g) || []
   ).length;
@@ -102,4 +102,22 @@ export const maskMoneyInput = (target: HTMLInputElement, decimalCount = 2) => {
     newPosition = Math.min(newPosition, newValue.length);
     target.setSelectionRange(newPosition, newPosition);
   }
+};
+
+export const validateMoney = (value: string) => {
+  const numericValue = parseFloat(value.replace(/\s/g, "").replace(",", "."));
+
+  if (numericValue < 1 || numericValue > 1000000) {
+    return "Сумма должна быть от 1 до 1 000 000₽";
+  }
+
+  return "";
+};
+
+export const validateDescription = (value: string) => {
+  if (value.length > 200) {
+    return "Не больше 200 символов";
+  }
+
+  return "";
 };

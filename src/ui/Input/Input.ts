@@ -168,31 +168,16 @@ class UIInput extends HTMLElement {
       error = this.customValidation(value);
     }
 
-    if (
-      this.validators.minLength &&
-      value &&
-      value.length < Number(this.validators.minLength)
-    ) {
-      error = `Должно быть не менее ${this.validators.minLength} символов`;
-    }
-
-    if (
-      this.validators.maxLength &&
-      value &&
-      value.length > Number(this.validators.maxLength)
-    ) {
-      error = `Должно быть не более ${this.validators.maxLength} символов`;
-    }
-
     if (this.validators.required && !value) {
       error = "Поле обязательно";
     }
 
-    if (
+    const notEmail =
       this.validators.email &&
       value &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-    ) {
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    if (notEmail) {
       error = "Неверный Email";
     }
 
@@ -205,8 +190,6 @@ class UIInput extends HTMLElement {
   getValidators() {
     return {
       required: this.hasAttribute("required"),
-      minLength: this.getAttribute("minlength"),
-      maxLength: this.getAttribute("maxlength"),
       email: this.hasAttribute("email"),
     };
   }
