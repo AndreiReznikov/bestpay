@@ -127,7 +127,10 @@ class CPaymentForm extends HTMLElement {
     this.button = this.shadowRoot?.querySelector(".button") || null;
     this.checkbox = this.shadowRoot?.querySelector(".checkbox") || null;
 
-    this.shadowRoot?.addEventListener('input', this.updateButtonState.bind(this));
+    this.shadowRoot?.addEventListener(
+      "input",
+      this.updateButtonState.bind(this),
+    );
     this.button?.addEventListener("click", this.handleSubmit.bind(this));
 
     this.updateButtonState();
@@ -138,8 +141,8 @@ class CPaymentForm extends HTMLElement {
 
     const inputs = this.shadowRoot?.querySelectorAll("ui-input") || [];
 
-    const allValid = Array.from(inputs).every(input =>
-      (input as any).validate().isValid
+    const allValid = Array.from(inputs).every(
+      (input) => (input as any).validate().isValid,
     );
 
     this.button.disabled = !allValid;
@@ -149,13 +152,26 @@ class CPaymentForm extends HTMLElement {
     e.preventDefault();
 
     const inputs = this.shadowRoot?.querySelectorAll("ui-input") || [];
-    const isValid = Array.from(inputs).every(input =>
-      (input as any).validateAndShowError()
+    const isValid = Array.from(inputs).every((input) =>
+      (input as any).validateAndShowError(),
     );
 
     if (isValid) {
       this.button!.loading = true;
-      setTimeout(() => window.location.href = "/notify.html", 500);
+      const random = Math.random();
+
+      let status: string;
+      if (random < 0.33) {
+        status = "success";
+      } else if (random < 0.66) {
+        status = "error";
+      } else {
+        status = "not-payed";
+      }
+
+      setTimeout(() => {
+        window.location.href = `/notify.html?status=${status}`;
+      }, 500);
     }
   }
 }
