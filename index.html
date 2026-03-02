@@ -8,12 +8,18 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bestpay</title>
+    <title>unipay</title>
   </head>
   <body>
     <div id="app">
       <c-unipay-form></c-unipay-form>
     </div>
     <script type="module" src="/src/main.ts"></script>
+    <script type="module">
+      import "@components/UnipayForm";
+      import "@ui/Button";
+      import "@ui/Input";
+      import "@ui/Textarea";
+    </script>
   </body>
 </html>
