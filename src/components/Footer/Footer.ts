@@ -15,14 +15,14 @@ footerStyles.replaceSync(`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
     min-height: 200px;
     background: linear-gradient(180deg, var(--color-text-placeholder, #f2f2f2) 0%, rgba(242, 242, 242, 0) 100%);
   }
 
   .logos-list {
     display: flex;
-    gap: 7px;
+    gap: 5px;
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -53,6 +53,7 @@ footerStyles.replaceSync(`
     align-items: center;
     gap: 8px;
     max-width: 209px;
+    margin-top: 8px;
   }
 
   .info {

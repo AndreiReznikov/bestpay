@@ -16,19 +16,52 @@ paymentFormStyles.replaceSync(`
   :host {
     display: inline-flex;
     max-width: 412px;
+    width: 100%;
   }
 
   .form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 32px;
+    gap: 24px;
+    width: 100%;
   }
 
+  .card-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 60px 56px 18px 56px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    .card-wrapper {
+      width: auto;
+      padding: 0;
+      box-shadow: none;
+    }
+  }
+
+
   .logo-container {
+    position: absolute;
+    top: 24px;
+    right: 24px;
     display: flex;
     justify-content: flex-end;
   }
+
+    @media (max-width: 768px) {
+      .logo-container {
+        top: -60px;
+        right: 0;
+      }
+    }
 
   .logo {
     width: 55px;
@@ -39,21 +72,6 @@ paymentFormStyles.replaceSync(`
     background-position: center;
   }
 
-  .card-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    padding: 24px 56px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);
-  }
-
-  @media (max-width: 768px) {
-    .card-wrapper {
-      padding: 0;
-      box-shadow: none;
-    }
-  }
 
   .card-data-wrapper {
     display: flex;
@@ -66,8 +84,17 @@ paymentFormStyles.replaceSync(`
     }
   }
 
+  .checkbox {
+    margin-top: 8px;
+  }
+
+  .button {
+    padding-top: 50px;
+  }
+
   .terms {
     max-width: 240px;
+    margin: 0;
     font-size: 11px;
     text-align: center;
     color: var(--color-text-primary, #a6a6a6);
@@ -94,7 +121,7 @@ class CPaymentForm extends HTMLElement {
 
     this.shadowRoot.adoptedStyleSheets = [paymentFormStyles];
     this.shadowRoot.innerHTML = `<form class="form">
-      <div class="card-wrapper">
+      <section class="card-wrapper">
         <div class="logo-container">
           <div class="logo"></div>
         </div>
@@ -104,7 +131,7 @@ class CPaymentForm extends HTMLElement {
           placeholder="1234 5678 1234 5678"
           required
         ></ui-input>
-        <div class="card-data-wrapper">
+        <section class="card-data-wrapper">
           <ui-input
             class="date"
             title="Месяц / год"
@@ -124,8 +151,8 @@ class CPaymentForm extends HTMLElement {
               text="Три цифры с обратной стороны карты"
             ></ui-help-icon>
           </ui-input>
-        </div>
-      </div>
+        </section>
+      </section>
       <ui-checkbox
         class="checkbox"
         label="Сохранить карту для следующих покупок"

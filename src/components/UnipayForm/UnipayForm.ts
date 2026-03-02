@@ -28,7 +28,15 @@ unipayFormStyles.replaceSync(`
   }
 
   .title {
+    margin: 0;
+    padding: 0;
     color: var(--color-text-secondary, #595959);
+  }
+
+  .inputs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 `);
 
@@ -46,26 +54,28 @@ class CUnipayForm extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [unipayFormStyles];
     this.shadowRoot.innerHTML = `<form class="form">
       <h2 class="title">Создание заказа</h2>
-      <ui-input
-        class="money"
-        title="Введите сумму заказа"
-        placeholder="0"
-        aside="₽"
-        required
-      ></ui-input>
-      <ui-input
-        class="email"
-        title="Email"
-        placeholder="example@mail.com"
-        email
-        required
-      ></ui-input>
-      <ui-textarea
-        class="textarea"
-        title="Описание"
-        placeholder="Что-то о заказе"
-        required
-      ></ui-textarea>
+      <section class="inputs-wrapper">
+        <ui-input
+          class="money"
+          title="Введите сумму заказа"
+          placeholder="0"
+          aside="₽"
+          required
+        ></ui-input>
+        <ui-input
+          class="email"
+          title="Email"
+          placeholder="example@mail.com"
+          email
+          required
+        ></ui-input>
+        <ui-textarea
+          class="textarea"
+          title="Описание"
+          placeholder="Что-то о заказе"
+          required
+        ></ui-textarea>
+      </section>
       <ui-button class="button">Создать</ui-button>
     </form>`;
 

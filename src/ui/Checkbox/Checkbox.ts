@@ -63,7 +63,9 @@ checkboxStyles.replaceSync(`
   }
 
   .label {
-    font-size: 14px;
+    font-family: Roboto;
+    font-size: 15px;
+    letter-spacing: 0.3px;
     color: var(--color-text-secondary, #595959);
     cursor: pointer;
   }
