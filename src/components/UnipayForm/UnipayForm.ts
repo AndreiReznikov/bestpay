@@ -73,7 +73,13 @@ class CUnipayForm extends HTMLElement {
     this.bindMasks();
     this.bindValidation();
 
-    this.button?.addEventListener("click", this.handleSubmit.bind(this));
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.button?.addEventListener("click", this.handleSubmit);
+  }
+
+  disconnectedCallback() {
+    this.button?.addEventListener("click", this.handleSubmit);
   }
 
   private bindValidation() {

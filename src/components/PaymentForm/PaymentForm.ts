@@ -139,16 +139,21 @@ class CPaymentForm extends HTMLElement {
     this.cvvInput = this.shadowRoot?.querySelector(".cvv") || null;
     this.checkbox = this.shadowRoot?.querySelector(".checkbox") || null;
 
-    this.shadowRoot?.addEventListener(
-      "input",
-      this.updateButtonState.bind(this),
-    );
-    this.button?.addEventListener("click", this.handleSubmit.bind(this));
+    this.updateButtonState = this.updateButtonState.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.shadowRoot?.addEventListener("input", this.updateButtonState);
+    this.button?.addEventListener("click", this.handleSubmit);
 
     this.bindMasks();
     this.bindValidation();
 
     this.updateButtonState();
+  }
+
+  disconnectedCallback() {
+    this.shadowRoot?.removeEventListener("input", this.updateButtonState);
+    this.button?.removeEventListener("click", this.handleSubmit);
   }
 
   private bindValidation() {

@@ -114,13 +114,19 @@ class UITextarea extends HTMLElement {
     this.container = this.shadowRoot?.querySelector(".container");
     this.textarea = this.shadowRoot?.querySelector(".textarea");
     this.error = this.shadowRoot?.querySelector(".error");
+
     this.textarea.addEventListener("input", this.handleInput);
     this.textarea.addEventListener("blur", this.handleBlur);
 
     setTimeout(() => this.adjustHeight(2, 3), 0);
   }
 
-  adjustHeight(minRows = 2, maxRows = 3) {
+  disconnectedCallback() {
+    this.textarea.removeEventListener("input", this.handleInput);
+    this.textarea.removeEventListener("blur", this.handleBlur);
+  }
+
+  private adjustHeight(minRows = 2, maxRows = 3) {
     if (!this.textarea) return;
 
     const value = this.textarea.value;
