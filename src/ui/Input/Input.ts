@@ -23,14 +23,11 @@ inputStyles.replaceSync(`
     color: var(--color-error, #ff3b30);
   }
 
-  .container.invalid .input {
-    border-bottom: 1px solid var(--color-border, #ff3b30);
-  }
-
   .title-wrapper {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 8px;
+    min-height: 18px;
     margin-bottom: 14px;
   }
 
@@ -64,6 +61,14 @@ inputStyles.replaceSync(`
 
   .input::placeholder {
     color: var(--color-text-placeholder, #f2f2f2);
+  }
+
+  .container.invalid .input {
+    border-bottom: 1px solid var(--color-error, #ff3b30);
+  }
+
+  .input:focus {
+    border-bottom: 1px solid var(--color-border-hover, #ff335f);
   }
 
   @media (hover: hover) {

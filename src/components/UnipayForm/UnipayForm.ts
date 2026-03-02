@@ -20,6 +20,13 @@ unipayFormStyles.replaceSync(`
     box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);
   }
 
+  @media (max-width: 768px) {
+    .form {
+      padding: 0;
+      box-shadow: none;
+    }
+  }
+
   .title {
     color: var(--color-text-secondary, #595959);
   }

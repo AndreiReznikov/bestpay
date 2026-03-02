@@ -39,6 +39,10 @@ textareaStyles.replaceSync(`
     color: var(--color-text-placeholder, #f2f2f2);
   }
 
+  .textarea:focus {
+    border-bottom: 1px solid var(--color-border-hover, #ff335f);
+  }
+
   @media (hover: hover) {
     .textarea:hover {
       border-bottom: 1px solid var(--color-border-hover, #ff335f);

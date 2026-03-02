@@ -45,12 +45,25 @@ paymentFormStyles.replaceSync(`
     gap: 32px;
     padding: 24px 56px;
     border-radius: 12px;
-    box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);;
+    box-shadow: 0px 4px 16px 0px var(--color-shadow, #40404029);
+  }
+
+  @media (max-width: 768px) {
+    .card-wrapper {
+      padding: 0;
+      box-shadow: none;
+    }
   }
 
   .card-data-wrapper {
     display: flex;
     gap: 32px;
+  }
+
+  @media (max-width: 768px) {
+    .card-data-wrapper {
+      gap: 5px;
+    }
   }
 
   .terms {

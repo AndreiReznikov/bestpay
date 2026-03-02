@@ -67,6 +67,12 @@ checkboxStyles.replaceSync(`
     color: var(--color-text-secondary, #595959);
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    .label {
+      font-size: 11px;
+    }
+  }
 `);
 
 class UICheckbox extends HTMLElement {
