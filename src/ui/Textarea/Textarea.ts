@@ -90,7 +90,7 @@ class UITextarea extends HTMLElement {
     return isValid;
   }
 
-  handleInput(e: Event) {
+  handleInput() {
     this.error.textContent = "";
     this.container?.classList.remove("invalid");
     this.adjustHeight(2, 3);
@@ -177,9 +177,7 @@ class UITextarea extends HTMLElement {
       value.length < Number(this.validators.minLength)
     ) {
       error = `Должно быть не менее ${this.validators.minLength} символов`;
-    }
-
-    if (
+    } else if (
       this.validators.maxLength &&
       value &&
       value.length > Number(this.validators.maxLength)

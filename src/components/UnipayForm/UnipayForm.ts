@@ -1,6 +1,7 @@
 import type { UIButton } from "@ui/Button";
 import type { UIInput } from "@ui/Input";
 import type { UITextarea } from "@ui/Textarea";
+import { maskMoneyInput } from "./utils";
 
 const unipayFormStyles = new CSSStyleSheet();
 
@@ -44,7 +45,6 @@ class CUnipayForm extends HTMLElement {
         title="Введите сумму заказа"
         placeholder="0"
         aside="₽"
-        money
         required
       ></ui-input>
       <ui-input
@@ -58,6 +58,7 @@ class CUnipayForm extends HTMLElement {
         class="textarea"
         title="Описание"
         placeholder="Что-то о заказе"
+        maxLength="200"
         required
       ></ui-textarea>
       <ui-button class="button">Создать</ui-button>
@@ -70,10 +71,20 @@ class CUnipayForm extends HTMLElement {
     this.emailInput = this.shadowRoot?.querySelector(".email") || null;
     this.textarea = this.shadowRoot?.querySelector(".textarea") || null;
 
+    this.bindMasks();
+
     this.button?.addEventListener("click", this.handleSubmit.bind(this));
   }
 
-  handleSubmit() {
+  private bindMasks() {
+    setTimeout(() => {
+      if (this.moneyInput) {
+        this.moneyInput.customMask = maskMoneyInput;
+      }
+    });
+  }
+
+  private handleSubmit() {
     const isValid = this.validate();
 
     if (isValid) {

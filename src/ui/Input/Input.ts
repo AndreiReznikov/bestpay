@@ -1,10 +1,6 @@
 import {
   checkCard,
   checkIsDateValid,
-  maskCardInput,
-  maskCvvInput,
-  maskDateInput,
-  maskMoneyInput,
 } from "./utils";
 
 const inputStyles = new CSSStyleSheet();
@@ -92,6 +88,7 @@ class UIInput extends HTMLElement {
   input: HTMLInputElement | null = null;
   error: HTMLSpanElement | null = null;
   validators: Record<string, string | boolean | null> = {};
+  customMask: ((target: HTMLInputElement) => void) | null = null;
 
   constructor() {
     super();
@@ -126,21 +123,7 @@ class UIInput extends HTMLElement {
   handleInput(e: Event) {
     const target = e.target as HTMLInputElement;
 
-    if (this.hasAttribute("money")) {
-      maskMoneyInput(target);
-    }
-
-    if (this.hasAttribute("card")) {
-      maskCardInput(target);
-    }
-
-    if (this.hasAttribute("date")) {
-      maskDateInput(target);
-    }
-
-    if (this.hasAttribute("cvv")) {
-      maskCvvInput(target);
-    }
+    this.customMask?.(target);
 
     this.error.textContent = "";
     this.container?.classList.remove("invalid");
@@ -164,8 +147,14 @@ class UIInput extends HTMLElement {
     this.container = this.shadowRoot?.querySelector(".container");
     this.input = this.shadowRoot?.querySelector(".input");
     this.error = this.shadowRoot?.querySelector(".error");
+
     this.input.addEventListener("input", this.handleInput);
     this.input.addEventListener("blur", this.handleBlur);
+  }
+
+  disconnectedCallback() {
+    this.input.removeEventListener("input", this.handleInput);
+    this.input.removeEventListener("blur", this.handleBlur);
   }
 
   validateAndShowError(): boolean {
@@ -242,11 +231,7 @@ class UIInput extends HTMLElement {
       required: this.hasAttribute("required"),
       minLength: this.getAttribute("minlength"),
       maxLength: this.getAttribute("maxlength"),
-      money: this.hasAttribute("money"),
       email: this.hasAttribute("email"),
-      card: this.hasAttribute("card"),
-      date: this.hasAttribute("date"),
-      cvv: this.hasAttribute("cvv"),
     };
   }
 

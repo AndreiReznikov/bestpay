@@ -1,6 +1,8 @@
 import type { UIButton } from "@ui/Button";
 import type { UICheckbox } from "@ui/Checkbox";
 import bankLogoSrc from "@assets/logos/bank-logo.svg";
+import type { UIInput } from "@/ui/Input";
+import { maskCardInput, maskCvvInput, maskDateInput } from "./utils";
 
 const paymentFormStyles = new CSSStyleSheet();
 
@@ -61,6 +63,9 @@ const sum = "12 500₽";
 
 class CPaymentForm extends HTMLElement {
   button: UIButton | null = null;
+  cardInput: UIInput | null = null;
+  dateInput: UIInput | null = null;
+  cvvInput: UIInput | null = null;
   checkbox: UICheckbox | null = null;
 
   constructor() {
@@ -79,7 +84,6 @@ class CPaymentForm extends HTMLElement {
           class="card"
           title="Номер карты"
           placeholder="1234 5678 1234 5678"
-          card
           required
         ></ui-input>
         <div class="card-data-wrapper">
@@ -88,7 +92,6 @@ class CPaymentForm extends HTMLElement {
             title="Месяц / год"
             placeholder="ММ / ГГ"
             size="sm"
-            date
             required
           ></ui-input>
           <ui-input
@@ -96,7 +99,6 @@ class CPaymentForm extends HTMLElement {
             title="CVV / CVC"
             placeholder="123"
             size="sm"
-            cvv
             required
           >
             <ui-help-icon
@@ -125,6 +127,9 @@ class CPaymentForm extends HTMLElement {
 
   connectedCallback() {
     this.button = this.shadowRoot?.querySelector(".button") || null;
+    this.cardInput = this.shadowRoot?.querySelector(".card") || null;
+    this.dateInput = this.shadowRoot?.querySelector(".date") || null;
+    this.cvvInput = this.shadowRoot?.querySelector(".cvv") || null;
     this.checkbox = this.shadowRoot?.querySelector(".checkbox") || null;
 
     this.shadowRoot?.addEventListener(
@@ -133,7 +138,23 @@ class CPaymentForm extends HTMLElement {
     );
     this.button?.addEventListener("click", this.handleSubmit.bind(this));
 
+    this.bindMasks();
+
     this.updateButtonState();
+  }
+
+  private bindMasks() {
+    setTimeout(() => {
+      if (this.cardInput) {
+        this.cardInput.customMask = maskCardInput;
+      }
+      if (this.dateInput) {
+        this.dateInput.customMask = maskDateInput;
+      }
+      if (this.cvvInput) {
+        this.cvvInput.customMask = maskCvvInput;
+      }
+    });
   }
 
   private updateButtonState() {
